@@ -2,6 +2,7 @@ package com.desafio.agendamentos.advice;
 
 import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
+import com.desafio.agendamentos.services.exceptions.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,8 @@ public class GlobalControllerAdvice {
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<String> handleCustomerNotFound(CustomerNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFound(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
