@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    @Transactional
     public Customer create(Customer customer) throws CustomerExistsException {
         var customerExists = customerRepository.findByEmail(customer.getEmail());
 
@@ -37,6 +39,7 @@ public class CustomerService {
                 .orElseThrow(CustomerNotFoundException::new);
     }
 
+    @Transactional
     public Customer update(Long customerId, Customer customer) throws CustomerNotFoundException {
         var customerFromDb = findById(customerId);
 
@@ -47,6 +50,7 @@ public class CustomerService {
         return customerRepository.save(customerFromDb);
     }
 
+    @Transactional
     public Customer delete(Long customerId) throws CustomerNotFoundException {
         var customer = findById(customerId);
 
