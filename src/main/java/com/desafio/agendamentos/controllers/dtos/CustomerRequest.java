@@ -1,5 +1,6 @@
 package com.desafio.agendamentos.controllers.dtos;
 
+import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Customer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,9 +23,15 @@ public record CustomerRequest(
 
         @NotBlank(message = "Document is mandatory")
         @CPF(message = "Invalid Document")
-        String document
+        String document,
+
+        @NotBlank(message = "CEP is mandatory")
+        @Pattern(regexp = "\\d{8}", message = "CEP should be exactly 8 digits")
+        String cep
 ) {
     public Customer toEntity() {
-        return new Customer(name, email, numberPhone, document);
+        Address address = new Address();
+        address.setCep(cep);
+        return new Customer(name, email, numberPhone, document, address);
     }
 }

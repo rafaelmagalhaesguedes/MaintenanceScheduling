@@ -10,10 +10,7 @@ import org.jasypt.util.text.StrongTextEncryptor;
  * simplificar o processo.
  **/
 public class CryptoService {
-    // Instância do StrongTextEncryptor da biblioteca JASYPT
     private static final StrongTextEncryptor encryptor;
-
-    // Chave utilizada no processo de encriptação dos dados
     private static final String SECRET_KEY = "mySecretKeyToEncrypt";
 
     // Bloco estático para inicializar o encryptor com a chave secreta

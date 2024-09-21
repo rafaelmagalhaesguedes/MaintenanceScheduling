@@ -1,5 +1,6 @@
 package com.desafio.agendamentos.controllers.dtos;
 
+import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.entities.Vehicle;
@@ -12,6 +13,7 @@ public record CustomerResponse(
         String email,
         String numberPhone,
         String document,
+        Address address,
         List<Vehicle> vehicles,
         List<Schedule> schedules
 ) {
@@ -22,6 +24,7 @@ public record CustomerResponse(
                 customer.getEmail(),
                 customer.getNumberPhone(),
                 customer.getRawDocument(),
+                customer.getAddress(),
                 customer.getVehicles().stream().toList(),
                 customer.getAppointments().stream().toList()
         );

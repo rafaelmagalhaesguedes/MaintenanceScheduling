@@ -4,7 +4,9 @@ import static org.mockito.ArgumentMatchers.any;
 
 import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.repositories.CustomerRepository;
+import com.desafio.agendamentos.services.AddressService;
 import com.desafio.agendamentos.services.CustomerService;
+import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,11 +28,14 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
-    @InjectMocks
-    private CustomerService service;
+    @Mock
+    private AddressService addressService;
 
     @Mock
     private CustomerRepository repository;
+
+    @InjectMocks
+    private CustomerService service;
 
     private static final String ERROR_MESSAGE = "Customer not found";
 
@@ -42,6 +47,19 @@ public class CustomerServiceTest {
         var sut = service.create(CUSTOMER);
 
         assertThat(sut).isEqualTo(CUSTOMER);
+        verify(addressService, times(1)).fillAddress(CUSTOMER);
+        verify(repository, times(1)).save(CUSTOMER);
+    }
+
+    @Test
+    public void createCustomer_WithExistingEmail_ThrowsException() {
+        when(repository.findByEmail(CUSTOMER.getEmail()))
+                .thenReturn(Optional.of(CUSTOMER));
+
+        assertThatThrownBy(() -> service.create(CUSTOMER))
+                .isInstanceOf(CustomerExistsException.class);
+
+        verify(repository, never()).save(any(Customer.class));
     }
 
     @Test
@@ -51,6 +69,7 @@ public class CustomerServiceTest {
         assertThatThrownBy(() -> service.create(INVALID_CUSTOMER))
                 .isInstanceOf(RuntimeException.class);
 
+        verify(repository, times(1)).save(INVALID_CUSTOMER);
     }
 
     @Test

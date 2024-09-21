@@ -32,6 +32,9 @@ public class Customer {
     @Transient
     private String rawDocument;
 
+    @Embedded
+    private Address address;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles = new ArrayList<>();
 
@@ -51,6 +54,14 @@ public class Customer {
         this.email = email;
         this.numberPhone = numberPhone;
         this.rawDocument = document;
+    }
+
+    public Customer(String name, String email, String numberPhone, String document, Address address) {
+        this.name = name;
+        this.email = email;
+        this.numberPhone = numberPhone;
+        this.rawDocument = document;
+        this.address = address;
     }
 
     @PrePersist

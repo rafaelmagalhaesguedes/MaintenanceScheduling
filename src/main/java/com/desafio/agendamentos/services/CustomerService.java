@@ -17,10 +17,12 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final AddressService addressService;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, AddressService addressService) {
         this.customerRepository = customerRepository;
+        this.addressService = addressService;
     }
 
     @Transactional
@@ -29,6 +31,10 @@ public class CustomerService {
 
         if (customerExists.isPresent()) {
             throw new CustomerExistsException();
+        }
+
+        if (customer.getAddress() != null && customer.getAddress().getCep() != null) {
+            addressService.fillAddress(customer);
         }
 
         return customerRepository.save(customer);
@@ -46,6 +52,11 @@ public class CustomerService {
         customerFromDb.setName(customer.getName());
         customerFromDb.setEmail(customer.getEmail());
         customerFromDb.setNumberPhone(customer.getNumberPhone());
+
+        if (customer.getAddress() != null && customer.getAddress().getCep() != null) {
+            addressService.fillAddress(customer);
+            customerFromDb.setAddress(customer.getAddress());
+        }
 
         return customerRepository.save(customerFromDb);
     }
