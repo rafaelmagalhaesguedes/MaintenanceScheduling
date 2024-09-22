@@ -32,7 +32,7 @@ public class Customer {
     @Transient
     private String rawDocument;
 
-    @Embedded
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
