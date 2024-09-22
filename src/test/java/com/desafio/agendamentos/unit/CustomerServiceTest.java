@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.repositories.CustomerRepository;
-import com.desafio.agendamentos.services.AddressService;
+import com.desafio.agendamentos.services.CepService;
 import com.desafio.agendamentos.services.CustomerService;
 import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
     @Mock
-    private AddressService addressService;
+    private CepService cepService;
 
     @Mock
     private CustomerRepository repository;
@@ -47,7 +47,7 @@ public class CustomerServiceTest {
         var sut = service.create(CUSTOMER);
 
         assertThat(sut).isEqualTo(CUSTOMER);
-        verify(addressService, times(1)).fillAddress(CUSTOMER);
+        verify(cepService, times(1)).fillAddress(CUSTOMER);
         verify(repository, times(1)).save(CUSTOMER);
     }
 
