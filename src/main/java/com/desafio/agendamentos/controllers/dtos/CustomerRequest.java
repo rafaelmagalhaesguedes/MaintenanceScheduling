@@ -25,7 +25,6 @@ public record CustomerRequest(
         @CPF(message = "Invalid Document")
         String document,
 
-        @NotBlank(message = "CEP is mandatory")
         @Pattern(regexp = "\\d{8}", message = "CEP should be exactly 8 digits")
         String cep
 ) {

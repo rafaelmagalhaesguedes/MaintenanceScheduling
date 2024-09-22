@@ -1,11 +1,10 @@
 package com.desafio.agendamentos.controllers.dtos;
 
 import com.desafio.agendamentos.entities.Address;
-import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.entities.Customer;
-import com.desafio.agendamentos.entities.Vehicle;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record CustomerResponse(
         Long id,
@@ -13,9 +12,9 @@ public record CustomerResponse(
         String email,
         String numberPhone,
         String document,
-        Address address,
-        List<Vehicle> vehicles,
-        List<Schedule> schedules
+        AddressResponse address,
+        List<VehicleResponse> vehicles,
+        List<ScheduleResponse> schedules
 ) {
     public static CustomerResponse fromEntity(Customer customer) {
         return new CustomerResponse(
@@ -24,9 +23,13 @@ public record CustomerResponse(
                 customer.getEmail(),
                 customer.getNumberPhone(),
                 customer.getRawDocument(),
-                customer.getAddress(),
-                customer.getVehicles().stream().toList(),
-                customer.getAppointments().stream().toList()
+                AddressResponse.fromEntity(customer.getAddress()),
+                customer.getVehicles().stream()
+                        .map(VehicleResponse::fromEntity)
+                        .collect(Collectors.toList()),
+                customer.getAppointments().stream()
+                        .map(ScheduleResponse::fromEntity)
+                        .collect(Collectors.toList())
         );
     }
 }

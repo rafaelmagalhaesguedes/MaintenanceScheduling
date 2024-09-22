@@ -29,10 +29,8 @@ public class Schedule {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Schedule(Customer customer, LocalDateTime dateSchedule, String descriptionService, Status status) {
-        this.customer = customer;
+    public Schedule(LocalDateTime dateSchedule, String descriptionService) {
         this.dateSchedule = dateSchedule;
         this.descriptionService = descriptionService;
-        this.status = status;
     }
 }
