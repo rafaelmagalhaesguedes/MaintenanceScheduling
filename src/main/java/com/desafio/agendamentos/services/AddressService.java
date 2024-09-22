@@ -1,49 +1,50 @@
 package com.desafio.agendamentos.services;
 
-import com.desafio.agendamentos.controllers.dtos.AddressResponse;
 import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Customer;
+import com.desafio.agendamentos.repositories.AddressRepository;
+import com.desafio.agendamentos.services.exceptions.AddressNotFoundException;
 import com.desafio.agendamentos.services.exceptions.CepNotFoundException;
+import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
- * Address Service
- * *
- * Classe utlizada para obter informações
- * de endereço com base no CEP do cliente.
- * Nesta classe utilizamos a API VIA CEP
- * para simplificar o processo de localização
- * dos endereços dos cliente.
- **/
+ * Serviço responsável por gerenciar endereços.
+ */
 @Service
 public class AddressService {
+    private final AddressRepository addressRepository;
+    private final CustomerService customerService;
+    private final CepService cepService;
 
-    private static final String VIACEP_URL = "https://viacep.com.br/ws/{cep}/json/";
+    @Autowired
+    public AddressService(AddressRepository addressRepository, CustomerService customerService, CepService cepService) {
+        this.addressRepository = addressRepository;
+        this.customerService = customerService;
+        this.cepService = cepService;
+    }
 
     /**
-     * Método para preencher o endereço de um cliente com base no CEP informado.
-     * @param customer O cliente cujo endereço será preenchido.
+     * Encontra um endereço pelo seu ID.
+     *
+     * @param addressId ID do endereço.
+     * @return Endereço encontrado.
+     * @throws AddressNotFoundException Se o endereço não for encontrado.
      */
-    public void fillAddress(Customer customer) throws CepNotFoundException {
-        RestTemplate restTemplate = new RestTemplate();
+    public Address findById(Long addressId) throws AddressNotFoundException {
+        return addressRepository.findById(addressId)
+                .orElseThrow(AddressNotFoundException::new);
+    }
 
-        String cep = customer.getAddress().getCep();
+    public Address updateCep(Long customerId, Long addressId, Address cep) throws CustomerNotFoundException, AddressNotFoundException, CepNotFoundException {
+        Customer customer = customerService.findById(customerId);
+        Address address = findById(addressId);
 
-        AddressResponse addressResponse = restTemplate
-                .getForObject(VIACEP_URL, AddressResponse.class, cep);
+        address.setCep(address.getCep());
 
-        if (addressResponse == null || addressResponse.cep() == null || "true".equals(addressResponse.error())) {
-            throw new CepNotFoundException();
-        }
+        cepService.fillAddress(customer);
 
-        Address address = new Address();
-        address.setCep(addressResponse.cep());
-        address.setStreet(addressResponse.logradouro());
-        address.setNeighborhood(addressResponse.bairro());
-        address.setCity(addressResponse.localidade());
-        address.setState(addressResponse.uf());
-
-        customer.setAddress(address);
+        return address;
     }
 }
