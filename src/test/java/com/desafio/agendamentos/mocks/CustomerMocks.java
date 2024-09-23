@@ -21,16 +21,4 @@ public class CustomerMocks {
             "update@email.com",
             "22333333333",
             "12345678918");
-
-    public static Customer C1 = new Customer(
-            "Customer 01",
-            "customer@email.com",
-            "11222222222",
-            "12345678910");
-
-    public static Customer C2 = new Customer(
-            "Customer 02",
-            "customer2@email.com",
-            "11222222222",
-            "12345678912");
 }
