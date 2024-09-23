@@ -128,6 +128,7 @@ public class CustomerService {
      * @throws CustomerNotFoundException Se o cliente não for encontrado.
      * @throws AddressNotFoundException Se o endereço não for encontrado.
      */
+    @Transactional
     public Address updateCustomerAddress(Long customerId, Address address) throws CustomerNotFoundException, AddressNotFoundException {
         var customer = findCustomerById(customerId);
         var addressId = customer.getAddress().getId();
