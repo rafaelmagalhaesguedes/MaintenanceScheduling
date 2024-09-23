@@ -28,7 +28,7 @@ Para instalar e usar o projeto tenha em sua máquina os seguintes requisitos:
 ```bash
   mkdir microsservicoAgendamento/
   cd microsservicoAgendamento/
-  git clone git@github.com:rafaelmagalhaesguedes/MicrosservicoAgendamento.git
+  git clone git@github.com:rafaelmagalhaesguedes/MicrosservicoAgendamentos.git
 ```
 
 2. Rodando o projeto com Docker:
