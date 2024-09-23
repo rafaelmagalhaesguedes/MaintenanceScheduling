@@ -33,4 +33,12 @@ public class Vehicle {
         this.make = make;
         this.year = year;
     }
+
+    public Vehicle(Long id, String licensePlate, String model, String make, Integer year) {
+        this.id = id;
+        this.licensePlate = licensePlate;
+        this.model = model;
+        this.make = make;
+        this.year = year;
+    }
 }
