@@ -41,6 +41,13 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> appointments = new ArrayList<>();
 
+    public Customer(Long id, String name, String email, String numberPhone) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.numberPhone = numberPhone;
+    }
+
     public Customer(String name, String email, String numberPhone, String document) {
         this.name = name;
         this.email = email;

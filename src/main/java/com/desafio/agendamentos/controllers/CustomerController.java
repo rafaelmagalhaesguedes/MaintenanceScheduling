@@ -1,118 +1,128 @@
 package com.desafio.agendamentos.controllers;
 
 import com.desafio.agendamentos.controllers.dtos.*;
-import com.desafio.agendamentos.services.AddressService;
 import com.desafio.agendamentos.services.CustomerService;
-import com.desafio.agendamentos.services.ScheduleService;
-import com.desafio.agendamentos.services.VehicleService;
 import com.desafio.agendamentos.services.exceptions.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
+@Validated
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final VehicleService vehicleService;
-    private final ScheduleService scheduleService;
-    private final AddressService addressService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, VehicleService vehicleService, ScheduleService scheduleService, AddressService addressService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.vehicleService = vehicleService;
-        this.scheduleService = scheduleService;
-        this.addressService = addressService;
     }
 
     @PostMapping
+    @Operation(summary = "Criar cliente", description = "Criar um novo cliente")
+    @ApiResponse(responseCode = "201", description = "Retorna os dados do cliente criado")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerResponse createCustomer(@RequestBody @Valid CustomerRequest request) throws CustomerExistsException {
         return CustomerResponse.fromEntity(
-                customerService.create(request.toEntity()));
+                customerService.createCustomer(request.toEntity()));
     }
 
     @GetMapping("/{customerId}")
-    public CustomerResponse findCustomerById(@PathVariable Long customerId) throws CustomerNotFoundException {
+    @Operation(summary = "Buscar cliente", description = "Buscar um cliente por ID")
+    @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente encontrado")
+    public CustomerResponse findCustomerById(@PathVariable @Min(1) Long customerId) throws CustomerNotFoundException {
         return CustomerResponse.fromEntity(
-                customerService.findById(customerId)
+                customerService.findCustomerById(customerId)
         );
     }
 
     @PutMapping("/{customerId}")
-    public CustomerResponse updateCustomer(@PathVariable Long customerId, @RequestBody @Valid CustomerRequest request) throws CustomerNotFoundException {
+    @Operation(summary = "Atualizar cliente", description = "Atualizar um cliente por ID")
+    @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente atualizado")
+    public CustomerResponse updateCustomer(@PathVariable @Min(1) Long customerId, @RequestBody @Valid CustomerRequest request) throws CustomerNotFoundException {
         return CustomerResponse.fromEntity(
-                customerService.update(customerId, request.toEntity())
+                customerService.updateCustomer(customerId, request.toEntity())
         );
     }
 
     @DeleteMapping("/{customerId}")
-    public CustomerResponse deleteCustomer(@PathVariable Long customerId) throws CustomerNotFoundException {
+    @Operation(summary = "Deletar cliente", description = "Deletar um cliente por ID")
+    @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente deletado")
+    public CustomerResponse deleteCustomer(@PathVariable @Min(1) Long customerId) throws CustomerNotFoundException {
         return CustomerResponse.fromEntity(
-                customerService.delete(customerId)
+                customerService.deleteCustomer(customerId)
         );
     }
 
-    @GetMapping
-    public List<CustomerResponse> listCustomers(@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-                                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return customerService.list(pageNumber, pageSize)
-                .stream()
-                .map(CustomerResponse::fromEntity)
-                .toList();
-    }
-
-    @PutMapping("/{customerId}/address/{addressId}")
-    public AddressResponse updateCepAddress(@PathVariable Long customerId,
-                                            @PathVariable Long addressId,
-                                            @RequestBody AddressRequest request) throws CustomerNotFoundException, AddressNotFoundException, CepNotFoundException {
+    @PutMapping("/{customerId}/address")
+    @Operation(summary = "Atualizar endereço", description = "Atualizar o endereço de um cliente")
+    @ApiResponse(responseCode = "200", description = "Retorna os dados do endereço atualizado")
+    public AddressResponse updateCustomerAddress(@PathVariable @Min(1) Long customerId, @RequestBody AddressRequest addressRequest) throws CustomerNotFoundException, AddressNotFoundException {
         return AddressResponse.fromEntity(
-                addressService.updateCep(customerId, addressId, request.toEntity())
+                customerService.updateCustomerAddress(customerId, addressRequest.toEntity())
         );
     }
 
     @PostMapping("/{customerId}/vehicle")
+    @Operation(summary = "Criar veículo", description = "Criar um veículo associado a um cliente")
+    @ApiResponse(responseCode = "201", description = "Retorna os dados do veículo criado")
     @ResponseStatus(HttpStatus.CREATED)
-    public VehicleResponse createVehicle(@PathVariable Long customerId,
-                                         @RequestBody VehicleRequest request) throws CustomerNotFoundException{
+    public VehicleResponse createCustomerVehicle(@PathVariable @Min(1) Long customerId, @RequestBody VehicleRequest request) throws CustomerNotFoundException {
         return VehicleResponse.fromEntity(
-                vehicleService.create(customerId, request.toEntity()));
+                customerService.createCustomerVehicle(customerId, request.toEntity()));
     }
 
     @GetMapping("/{customerId}/vehicle")
-    public List<VehicleResponse> findVehicle(@PathVariable Long customerId) throws VehicleNotFoundException {
-        return vehicleService.findByCustomerId(customerId).stream()
+    @Operation(summary = "Listar veículos", description = "Listar os veículos associados a um cliente")
+    @ApiResponse(responseCode = "200", description = "Retorna a lista de veículos")
+    public List<VehicleResponse> findCustomerVehicle(@PathVariable Long customerId) throws VehicleNotFoundException {
+        return customerService.findVehicleByCustomerId(customerId).stream()
                 .map(VehicleResponse::fromEntity)
                 .toList();
     }
 
     @PutMapping("/{customerId}/vehicle/{vehicleId}")
-    public VehicleResponse updateVehicle(@PathVariable Long customerId,
-                                         @PathVariable Long vehicleId,
-                                         @RequestBody VehicleRequest request) throws CustomerNotFoundException, VehicleNotFoundException {
+    @Operation(summary = "Atualizar veículo", description = "Atualizar o veículo associado a um cliente")
+    @ApiResponse(responseCode = "200", description = "Retorna os dados do veículo atualizado")
+    public VehicleResponse updateCustomerVehicle(@PathVariable @Min(1) Long customerId, @PathVariable @Min(1) Long vehicleId, @RequestBody VehicleRequest request) throws CustomerNotFoundException, VehicleNotFoundException {
         return VehicleResponse.fromEntity(
-                vehicleService.update(customerId, vehicleId, request.toEntity()));
+                customerService.updateCustomerVehicle(customerId, vehicleId, request.toEntity()));
     }
 
     @DeleteMapping("/{customerId}/vehicle/{vehicleId}")
-    public VehicleResponse deleteVehicle(@PathVariable Long customerId,
-                                         @PathVariable Long vehicleId) throws CustomerNotFoundException, VehicleNotFoundException {
+    @Operation(summary = "Deletar veículo", description = "Deletar o veículo associado a um cliente.")
+    @ApiResponse(responseCode = "200", description = "Retorna os dados do veículo deletado")
+    public VehicleResponse deleteCustomerVehicle(@PathVariable @Min(1) Long customerId, @PathVariable @Min(1) Long vehicleId) throws CustomerNotFoundException, VehicleNotFoundException {
         return VehicleResponse.fromEntity(
-                vehicleService.delete(customerId, vehicleId)
+                customerService.deleteCustomerVehicle(customerId, vehicleId)
         );
     }
 
     @PostMapping("/{customerId}/schedule")
     @ResponseStatus(HttpStatus.CREATED)
-    public ScheduleResponse createSchedule(@PathVariable Long customerId,
-                                           @RequestBody ScheduleRequest request) throws CustomerNotFoundException {
-        return ScheduleResponse.fromEntity(
-            scheduleService.createSchedule(customerId, request.toEntity())
+    @Operation(summary = "Criar agendamento", description = "Criar um agendamento associado a um cliente.")
+    @ApiResponse(responseCode = "201", description = "Retorna dados agendamento criado")
+    public ScheduleCustomerResponse createCustomerSchedule(@PathVariable @Min(1) Long customerId, @RequestBody ScheduleRequest request) throws CustomerNotFoundException {
+        return ScheduleCustomerResponse.fromEntity(
+                customerService.createCustomerSchedule(customerId, request.toEntity())
         );
+    }
+
+    @GetMapping("/{customerId}/schedule")
+    @Operation(summary = "Listar agendamentos", description = "Listar os agendamentos associados a um cliente.")
+    @ApiResponse(responseCode = "200", description = "Retorna lista de agendamentos")
+    public List<ScheduleCustomerResponse> findCustomerSchedule(@PathVariable @Min(1) Long customerId) throws ScheduleNotFoundException {
+        return customerService.findScheduleByCustomerId(customerId)
+                .stream()
+                .map(ScheduleCustomerResponse::fromEntity)
+                .toList();
     }
 }

@@ -1,6 +1,5 @@
 package com.desafio.agendamentos.controllers.dtos;
 
-import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Customer;
 
 import java.util.List;

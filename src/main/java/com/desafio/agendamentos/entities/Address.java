@@ -25,7 +25,11 @@ public class Address {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Address(String cep) {
+    public Address(String cep, String logradouro, String bairro, String localidade, String uf) {
         this.cep = cep;
+        this.street = logradouro;
+        this.neighborhood = bairro;
+        this.city = localidade;
+        this.state = uf;
     }
 }
