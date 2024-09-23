@@ -23,8 +23,7 @@ public class CepService {
      * @param customer Cliente cujo endereço será preenchido.
      * @throws CepNotFoundException Se o CEP não for encontrado.
      */
-    public void fillAddress(Customer customer) throws CepNotFoundException
-    {
+    public void fillAddress(Customer customer) throws CepNotFoundException {
         var restTemplate = new RestTemplate();
         var cep = customer.getAddress().getCep();
         var addressResponse = restTemplate.getForObject(VIACEP_URL, AddressResponse.class, cep);
@@ -45,8 +44,7 @@ public class CepService {
      * @param addressResponse Resposta do serviço de CEP contendo os dados do endereço.
      * @return Objeto Address preenchido com os dados do endereço.
      */
-    private static Address getAddress(Customer customer, AddressResponse addressResponse)
-    {
+    private static Address getAddress(Customer customer, AddressResponse addressResponse) {
         Address address = new Address();
 
         address.setCep(addressResponse.cep());
