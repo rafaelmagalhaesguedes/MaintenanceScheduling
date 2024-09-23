@@ -1,68 +1,78 @@
 package com.desafio.agendamentos.services;
 
-import static com.desafio.agendamentos.services.validations.SchedulingDateValidation.*;
-
-import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
-import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
+import com.desafio.agendamentos.services.exceptions.ScheduleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class ScheduleService {
+
     private final ScheduleRepository scheduleRepository;
-    private final CustomerService customerService;
 
     @Autowired
-    public ScheduleService(ScheduleRepository scheduleRepository, CustomerService customerService) {
+    public ScheduleService(ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
-        this.customerService = customerService;
     }
 
     /**
-     * Cria um novo agendamento.
+     * Busca um agendamento por ID.
      *
-     * @param customerId ID do cliente.
-     * @param schedule   Dados do agendamento.
-     * @return Dados do agendamento criado.
-     * @throws CustomerNotFoundException Se o cliente não for encontrado.
+     * @param scheduleId Id do agendamento.
+     * @return dados do agendamento encontrado.
      */
-    @Transactional
-    public Schedule createSchedule(Long customerId, Schedule schedule) throws CustomerNotFoundException {
-        // Verifica se o cliente existe
-        Customer customer = customerService.findById(customerId);
-
-        // Valida data do agendamento
-        validateScheduleDate(schedule.getDateSchedule());
-
-        // Formata data do agendamento
-        LocalDateTime formattedDateSchedule = formatScheduleDate(schedule.getDateSchedule());
-
-        // Seta os dados para criar um novo agendamento
-        Schedule newSchedule = new Schedule();
-        newSchedule.setCustomer(customer);
-        newSchedule.setDescriptionService(schedule.getDescriptionService());
-        newSchedule.setDateSchedule(formattedDateSchedule);
-        newSchedule.setStatus(Status.PENDENTE);
-
-        // Cria um novo agendamento e retorna os dados do agendamento criado
-        return scheduleRepository.save(newSchedule);
+    public Schedule findScheduleById(Long scheduleId) throws ScheduleNotFoundException {
+        return scheduleRepository.findById(scheduleId)
+                .orElseThrow(ScheduleNotFoundException::new);
     }
 
     /**
-     * Formata a data do agendamento.
+     * Atualiza o Status do Agendamento.
      *
-     * @param dateSchedule Data do agendamento.
-     * @return Data do agendamento formatada.
+     * @param scheduleId Id do agendamento.
+     * @param status Status do agendamento.
+     * @return agendamento com status atualizado.
      */
-    private static LocalDateTime formatScheduleDate(LocalDateTime dateSchedule) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        return LocalDateTime.parse(dateSchedule.format(formatter), formatter);
+    public Schedule updateScheduleStatus(Long scheduleId, Status status) throws ScheduleNotFoundException {
+        var scheduleFromDb = findScheduleById(scheduleId);
+
+        scheduleFromDb.setStatus(status);
+
+        return scheduleRepository.save(scheduleFromDb);
+    }
+
+    /**
+     * Lista todos os agendamentos com paginação, ordenados por data ascendente.
+     *
+     * @param page     Número da página.
+     * @param pageSize Tamanho da página.
+     * @return Página de agendamentos.
+     */
+    public Page<Schedule> listSchedulings(int page, int pageSize) {
+        var sort = Sort.by(Sort.Direction.ASC, "dateSchedule");
+        var pageRequest = PageRequest.of(page, pageSize, sort);
+
+        return scheduleRepository.findAll(pageRequest);
+    }
+
+    /**
+     * Lista agendamentos filtrados por Status com paginação.
+     *
+     * @param status   Status do agendamento.
+     * @param page     Número da página.
+     * @param pageSize Tamanho da página.
+     * @return Página de agendamentos filtrados por status.
+     */
+    public Page<Schedule> listSchedulingsByStatus(Status status, int page, int pageSize) {
+        var sort = Sort.by(Sort.Direction.ASC, "dateSchedule");
+        var statusToUppercase = Status.valueOf(status.name().toUpperCase());
+        var pageRequest = PageRequest.of(page, pageSize, sort);
+
+        return scheduleRepository.findByStatus(statusToUppercase, pageRequest);
     }
 }
