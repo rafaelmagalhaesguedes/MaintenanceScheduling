@@ -5,18 +5,20 @@ import com.desafio.agendamentos.enums.Status;
 
 import java.time.LocalDateTime;
 
-public record ScheduleResponse(
+public record ScheduleCustomerResponse(
         Long id,
         LocalDateTime dateSchedule,
         String descriptionService,
-        Status status
+        Status status,
+        CustomerScheduleResponse customer
 ) {
-    public static ScheduleResponse fromEntity(Schedule schedule) {
-        return new ScheduleResponse(
+    public static ScheduleCustomerResponse fromEntity(Schedule schedule) {
+        return new ScheduleCustomerResponse(
                 schedule.getId(),
                 schedule.getDateSchedule(),
                 schedule.getDescriptionService(),
-                schedule.getStatus()
+                schedule.getStatus(),
+                CustomerScheduleResponse.fromEntity(schedule.getCustomer())
         );
     }
 }

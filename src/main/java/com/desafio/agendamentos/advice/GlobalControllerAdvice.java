@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe Controladora global para tratamento de exceções.
+ * Controlador global para tratamento de exceções.
  */
 @ControllerAdvice
 public class GlobalControllerAdvice {

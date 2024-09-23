@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 /**
  * Classe para validar as datas de agendamento.
  */
-public class SchedulingDateValidation {
-    private static final int openingHour = 8;
-    private static final int closingHour = 18;
+public class ScheduleDateValidation {
+    private static final int openingHour = 8;  // Horário de abertura
+    private static final int closingHour = 18; // Horário de fechamento
 
     /**
      * Valida a data do agendamento.
@@ -19,7 +19,7 @@ public class SchedulingDateValidation {
      * @throws SchedulingDateException Se a data do agendamento for inválida.
      */
     public static void validateScheduleDate(LocalDateTime dateSchedule) throws SchedulingDateException {
-        LocalDateTime now = LocalDateTime.now();
+        var now = LocalDateTime.now();
 
         // Verifica se a data é anterior à data atual
         if (dateSchedule.isBefore(now)) {
