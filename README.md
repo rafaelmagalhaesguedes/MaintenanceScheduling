@@ -86,7 +86,7 @@ Lista com os principais endpoints da aplicação
 | <kbd>GET /customers/{customerId}</kbd>           | Busca os dados de um cliente
 | <kbd>PUT /customers/{customerId}/address</kbd>   | Atualiza um endereço associado a um cliente
 | <kbd>PUT /scheduling</kbd>                       | Atualiza o Status da reserva
-| <kbd>GET /scheduling</kbd>                       | Lista os agendamentos com páginação
+| <kbd>GET /scheduling</kbd>                       | Lista os agendamentos com paginação
 | <kbd>GET /scheduling/status</kbd>                | Lista agendamentos filtrados por status com paginação
 
 
