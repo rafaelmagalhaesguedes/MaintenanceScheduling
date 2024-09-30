@@ -1,4 +1,4 @@
-package com.desafio.agendamentos.controllers.dtos;
+package com.desafio.agendamentos.controllers.dtos.status;
 
 import com.desafio.agendamentos.enums.Status;
 import jakarta.validation.constraints.NotBlank;

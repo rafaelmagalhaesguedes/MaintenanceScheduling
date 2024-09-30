@@ -1,5 +1,6 @@
-package com.desafio.agendamentos.controllers.dtos;
+package com.desafio.agendamentos.controllers.dtos.customer;
 
+import com.desafio.agendamentos.controllers.dtos.vehicle.VehicleScheduleResponse;
 import com.desafio.agendamentos.entities.Customer;
 
 import java.util.List;

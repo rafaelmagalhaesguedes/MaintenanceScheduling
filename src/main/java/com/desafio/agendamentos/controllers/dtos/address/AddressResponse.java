@@ -1,4 +1,4 @@
-package com.desafio.agendamentos.controllers.dtos;
+package com.desafio.agendamentos.controllers.dtos.address;
 
 import com.desafio.agendamentos.entities.Address;
 

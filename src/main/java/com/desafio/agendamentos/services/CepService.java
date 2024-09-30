@@ -1,6 +1,6 @@
 package com.desafio.agendamentos.services;
 
-import com.desafio.agendamentos.controllers.dtos.AddressResponse;
+import com.desafio.agendamentos.controllers.dtos.address.AddressResponse;
 import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.services.exceptions.CepNotFoundException;

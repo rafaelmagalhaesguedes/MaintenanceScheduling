@@ -1,5 +1,6 @@
-package com.desafio.agendamentos.controllers.dtos;
+package com.desafio.agendamentos.controllers.dtos.schedule;
 
+import com.desafio.agendamentos.controllers.dtos.customer.CustomerScheduleResponse;
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.enums.Status;
 

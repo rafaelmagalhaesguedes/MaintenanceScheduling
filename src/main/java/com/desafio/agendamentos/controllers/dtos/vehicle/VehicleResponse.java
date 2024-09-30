@@ -1,5 +1,6 @@
-package com.desafio.agendamentos.controllers.dtos;
+package com.desafio.agendamentos.controllers.dtos.vehicle;
 
+import com.desafio.agendamentos.controllers.dtos.customer.CustomerVehicleResponse;
 import com.desafio.agendamentos.entities.Vehicle;
 
 public record VehicleResponse(

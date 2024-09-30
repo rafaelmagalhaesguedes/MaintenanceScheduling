@@ -1,4 +1,4 @@
-package com.desafio.agendamentos.controllers.dtos;
+package com.desafio.agendamentos.controllers.dtos.schedule;
 
 import com.desafio.agendamentos.entities.Schedule;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.controllers;
 
-import com.desafio.agendamentos.controllers.dtos.ScheduleCustomerResponse;
-import com.desafio.agendamentos.controllers.dtos.StatusRequest;
+import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleCustomerResponse;
+import com.desafio.agendamentos.controllers.dtos.status.StatusRequest;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.services.ScheduleService;
 import com.desafio.agendamentos.services.exceptions.ScheduleNotFoundException;

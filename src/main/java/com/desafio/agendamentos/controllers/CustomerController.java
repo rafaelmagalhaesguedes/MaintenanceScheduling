@@ -1,6 +1,14 @@
 package com.desafio.agendamentos.controllers;
 
-import com.desafio.agendamentos.controllers.dtos.*;
+import com.desafio.agendamentos.controllers.dtos.address.AddressRequest;
+import com.desafio.agendamentos.controllers.dtos.address.AddressResponse;
+import com.desafio.agendamentos.controllers.dtos.customer.CustomerCreationResponse;
+import com.desafio.agendamentos.controllers.dtos.customer.CustomerRequest;
+import com.desafio.agendamentos.controllers.dtos.customer.CustomerResponse;
+import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleCustomerResponse;
+import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleRequest;
+import com.desafio.agendamentos.controllers.dtos.vehicle.VehicleRequest;
+import com.desafio.agendamentos.controllers.dtos.vehicle.VehicleResponse;
 import com.desafio.agendamentos.services.CustomerService;
 import com.desafio.agendamentos.services.exceptions.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +38,8 @@ public class CustomerController {
     @Operation(summary = "Criar cliente", description = "Criar um novo cliente")
     @ApiResponse(responseCode = "201", description = "Retorna os dados do cliente criado")
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerResponse createCustomer(@RequestBody @Valid CustomerRequest request) throws CustomerExistsException {
-        return CustomerResponse.fromEntity(
+    public CustomerCreationResponse createCustomer(@RequestBody @Valid CustomerRequest request) throws CustomerExistsException {
+        return CustomerCreationResponse.fromEntity(
                 customerService.createCustomer(request.toEntity()));
     }
 
