@@ -5,6 +5,7 @@ import com.desafio.agendamentos.controllers.dtos.StatusRequest;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.services.ScheduleService;
 import com.desafio.agendamentos.services.exceptions.ScheduleNotFoundException;
+import com.desafio.agendamentos.services.exceptions.StatusValidateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;
@@ -38,7 +39,7 @@ public class ScheduleController {
     @Operation(summary = "Atualizar Status Agendamento", description = "Atualizar status do agendamento")
     @ApiResponse(responseCode = "200", description = "Retorna os dados do agendamento com status atualizado")
     public ScheduleCustomerResponse updateScheduleStatus(@PathVariable Long scheduleId,
-                                                         @RequestBody StatusRequest statusRequest) throws ScheduleNotFoundException {
+                                                         @RequestBody StatusRequest statusRequest) throws ScheduleNotFoundException, StatusValidateException {
         return ScheduleCustomerResponse.fromEntity(
                 scheduleService.updateScheduleStatus(scheduleId, statusRequest.status()));
     }
