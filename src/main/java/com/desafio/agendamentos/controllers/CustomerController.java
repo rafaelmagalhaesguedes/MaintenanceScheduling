@@ -75,7 +75,7 @@ public class CustomerController {
     @Operation(summary = "Criar veículo", description = "Criar um veículo associado a um cliente")
     @ApiResponse(responseCode = "201", description = "Retorna os dados do veículo criado")
     @ResponseStatus(HttpStatus.CREATED)
-    public VehicleResponse createCustomerVehicle(@PathVariable @Min(1) Long customerId, @RequestBody VehicleRequest request) throws CustomerNotFoundException {
+    public VehicleResponse createCustomerVehicle(@PathVariable @Min(1) Long customerId, @RequestBody VehicleRequest request) throws CustomerNotFoundException, VehicleValidateException {
         return VehicleResponse.fromEntity(
                 customerService.createCustomerVehicle(customerId, request.toEntity()));
     }

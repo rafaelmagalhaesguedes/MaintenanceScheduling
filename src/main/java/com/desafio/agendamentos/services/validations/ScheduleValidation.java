@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * Classe para validar as datas de agendamento.
  */
-public class ScheduleDateValidation {
+public class ScheduleValidation {
     private static final int openingHour = 8;  // Horário de abertura
     private static final int closingHour = 18; // Horário de fechamento
 

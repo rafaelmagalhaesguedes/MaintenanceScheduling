@@ -19,26 +19,11 @@ public class Vehicle {
 
     private String model;
 
-    private String make;
+    private String manufacturer;
 
     private Integer year;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
-    public Vehicle(String licensePlate, String model, String make, Integer year) {
-        this.licensePlate = licensePlate;
-        this.model = model;
-        this.make = make;
-        this.year = year;
-    }
-
-    public Vehicle(Long id, String licensePlate, String model, String make, Integer year) {
-        this.id = id;
-        this.licensePlate = licensePlate;
-        this.model = model;
-        this.make = make;
-        this.year = year;
-    }
 }

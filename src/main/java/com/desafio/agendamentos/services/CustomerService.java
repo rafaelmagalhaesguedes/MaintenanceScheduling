@@ -1,6 +1,7 @@
 package com.desafio.agendamentos.services;
 
-import static com.desafio.agendamentos.services.validations.ScheduleDateValidation.validateScheduleDate;
+import static com.desafio.agendamentos.services.validations.ScheduleValidation.validateScheduleDate;
+import static com.desafio.agendamentos.services.validations.VehicleValidation.vehicleCreationValidate;
 
 import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Customer;
@@ -152,9 +153,15 @@ public class CustomerService {
      * @throws CustomerNotFoundException Se o cliente não for encontrado.
      */
     @Transactional
-    public Vehicle createCustomerVehicle(Long customerId, Vehicle vehicle) throws CustomerNotFoundException {
+    public Vehicle createCustomerVehicle(Long customerId, Vehicle vehicle) throws CustomerNotFoundException, VehicleValidateException {
+
+        // Verifica se o cliente existe
         var customer = findCustomerById(customerId);
 
+        // Valida dados do veículo (placa e ano de fabricação)
+        vehicleCreationValidate(vehicle);
+
+        // Víncula o veículo ao cliente
         vehicle.setCustomer(customer);
 
         return vehicleRepository.save(vehicle);
@@ -194,7 +201,7 @@ public class CustomerService {
         var vehicle = vehicleFromDb.get();
         vehicle.setLicensePlate(vehicleDetails.getLicensePlate());
         vehicle.setModel(vehicleDetails.getModel());
-        vehicle.setMake(vehicleDetails.getMake());
+        vehicle.setManufacturer(vehicleDetails.getManufacturer());
         vehicle.setYear(vehicleDetails.getYear());
         vehicle.setCustomer(customer);
 

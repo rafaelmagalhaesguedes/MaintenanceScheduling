@@ -3,6 +3,7 @@ package com.desafio.agendamentos.advice;
 import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
 import com.desafio.agendamentos.services.exceptions.NotFoundException;
 import com.desafio.agendamentos.services.exceptions.SchedulingDateException;
+import com.desafio.agendamentos.services.exceptions.VehicleValidateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -72,6 +73,18 @@ public class GlobalControllerAdvice {
      */
     @ExceptionHandler(SchedulingDateException.class)
     public ResponseEntity<String> handleSchedulingDate(SchedulingDateException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(ex.getMessage());
+    }
+
+    /**
+     * Trata exceções de validação na criação de um veículo
+     *
+     * @param ex Exceção lançada quando os dados de criação são inválidos.
+     * @return Resposta HTTP com mensagem de entidade não processável.
+     */
+    @ExceptionHandler(VehicleValidateException.class)
+    public ResponseEntity<String> handleVehicleValidate(VehicleValidateException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(ex.getMessage());
     }
