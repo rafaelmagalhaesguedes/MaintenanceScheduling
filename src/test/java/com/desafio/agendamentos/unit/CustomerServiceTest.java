@@ -1,24 +1,25 @@
 package com.desafio.agendamentos.unit;
 
+import static com.desafio.agendamentos.mocks.ScheduleMocks.SCHEDULE;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.entities.Vehicle;
+import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.CustomerRepository;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
 import com.desafio.agendamentos.repositories.VehicleRepository;
-import com.desafio.agendamentos.services.CepService;
 import com.desafio.agendamentos.services.CustomerService;
-import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
-import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
-import com.desafio.agendamentos.services.exceptions.SchedulingDateException;
-import com.desafio.agendamentos.services.exceptions.VehicleNotFoundException;
+import com.desafio.agendamentos.services.ScheduleService;
+import com.desafio.agendamentos.services.exceptions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,9 +32,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CustomerServiceTest {
     @Mock
-    private CepService cepService;
+    private ScheduleService scheduleService;
 
     @Mock
     private CustomerRepository customerRepository;
@@ -333,7 +335,8 @@ public class CustomerServiceTest {
     public void createCustomerSchedule_WithNonExistentCustomer_ThrowsCustomerNotFoundException() {
         // Arrange
         var customerId = 99999999111223334L;  // Invalid ID
-        Schedule schedule = Schedule.builder()
+
+        var schedule = Schedule.builder()
                 .descriptionService("Service Description")
                 .dateSchedule(LocalDateTime.now().plusDays(1))
                 .build();
@@ -380,5 +383,59 @@ public class CustomerServiceTest {
         // Act & Assert
         assertThatThrownBy(() -> customerService.createCustomerSchedule(customerId, schedule))
                 .isInstanceOf(SchedulingDateException.class);
+    }
+
+    @Test
+    public void cancelCustomerSchedule_WithValidData_ReturnsCancelledSchedule() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+        var scheduleId = SCHEDULE.getId();
+        var schedule = SCHEDULE;
+
+        schedule.setCustomer(CUSTOMER);
+
+        when(scheduleService.findScheduleById(scheduleId))
+                .thenReturn(schedule);
+
+        when(scheduleRepository.save(any(Schedule.class)))
+                .thenReturn(schedule);
+
+        // Act
+        var result = customerService.cancelCustomerSchedule(customerId, scheduleId, Status.CANCELADO);
+
+        // Assert
+        assertThat(result).isNotNull();
+        assertThat(result.getStatus()).isEqualTo(Status.CANCELADO);
+    }
+
+    @Test
+    public void cancelCustomerSchedule_WithNonExistentSchedule_ThrowsScheduleNotFoundException() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+        var scheduleId = 9999922211188900L; // Invalid ID
+
+        when(scheduleService.findScheduleById(scheduleId))
+                .thenThrow(new ScheduleNotFoundException());
+
+        // Act & Assert
+        assertThatThrownBy(() -> customerService.cancelCustomerSchedule(customerId, scheduleId, Status.CANCELADO))
+                .isInstanceOf(ScheduleNotFoundException.class);
+    }
+
+    @Test
+    public void cancelCustomerSchedule_WithInvalidStatus_ThrowsStatusValidateException() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+        var scheduleId = SCHEDULE.getId();
+        var schedule = SCHEDULE;
+
+        schedule.setCustomer(CUSTOMER);
+
+        when(scheduleService.findScheduleById(scheduleId))
+                .thenReturn(schedule);
+
+        // Act & Assert
+        assertThatThrownBy(() -> customerService.cancelCustomerSchedule(customerId, scheduleId, Status.REALIZADO))
+                .isInstanceOf(StatusValidateException.class);
     }
 }
