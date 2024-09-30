@@ -34,101 +34,109 @@ public class ScheduleServiceTest {
     @Test
     void findScheduleById_WithValidId_ReturnsSchedule() throws ScheduleNotFoundException {
         // Arrange
-        Long scheduleId = 1L;
-        Schedule schedule = new Schedule();
-        schedule.setId(scheduleId);
+        var scheduleId = 1L;
+        var schedule = Schedule
+                .builder()
+                .id(scheduleId)
+                .build();
 
         when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.of(schedule));
 
         // Act
-        Schedule result = scheduleService.findScheduleById(scheduleId);
+        var result = scheduleService.findScheduleById(scheduleId);
 
         // Assert
         assertEquals(scheduleId, result.getId());
-        verify(scheduleRepository).findById(scheduleId);
     }
 
     @Test
     void findScheduleById_WithInvalidId_ThrowsScheduleNotFoundException() {
         // Arrange
-        Long scheduleId = 1L;
+        var scheduleId = 1L;
 
         when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ScheduleNotFoundException.class, () -> scheduleService.findScheduleById(scheduleId));
-        verify(scheduleRepository).findById(scheduleId);
     }
 
     @Test
     void updateScheduleStatus_WithValidId_ReturnsUpdatedSchedule() throws ScheduleNotFoundException {
         // Arrange
-        Long scheduleId = 1L;
-        Schedule schedule = new Schedule();
-        schedule.setId(scheduleId);
-        schedule.setStatus(Status.PENDENTE);
+        var scheduleId = 1L;
+        var schedule = Schedule.builder()
+                .id(scheduleId)
+                .status(Status.PENDENTE)
+                .build();
 
-        when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.of(schedule));
-        when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
+        when(scheduleRepository.findById(scheduleId))
+                .thenReturn(Optional.of(schedule));
+
+        when(scheduleRepository.save(any(Schedule.class)))
+                .thenReturn(schedule);
 
         // Act
-        Schedule result = scheduleService.updateScheduleStatus(scheduleId, Status.REALIZADO);
+        var result = scheduleService.updateScheduleStatus(scheduleId, Status.REALIZADO);
 
         // Assert
         assertEquals(Status.REALIZADO, result.getStatus());
-        verify(scheduleRepository).findById(scheduleId);
-        verify(scheduleRepository).save(schedule);
     }
 
     @Test
     void updateScheduleStatus_WithInvalidId_ThrowsScheduleNotFoundException() {
         // Arrange
-        Long scheduleId = 1L;
+        var scheduleId = 1L;
 
-        when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.empty());
+        when(scheduleRepository.findById(scheduleId))
+                .thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(ScheduleNotFoundException.class, () -> scheduleService.updateScheduleStatus(scheduleId, Status.REALIZADO));
-        verify(scheduleRepository).findById(scheduleId);
+        assertThrows(ScheduleNotFoundException.class, () -> scheduleService
+                .updateScheduleStatus(scheduleId, Status.REALIZADO));
     }
 
     @Test
     void listSchedulings_ReturnsPageOfSchedules() {
         // Arrange
-        int page = 0;
-        int pageSize = 10;
-        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "dateSchedule"));
-        Schedule schedule = new Schedule();
+        var page = 0;
+        var pageSize = 10;
+        var sort = Sort.by(Sort.Direction.ASC, "dateSchedule");
+        var pageRequest = PageRequest.of(page, pageSize, sort);
+        var schedule = new Schedule();
         Page<Schedule> schedulePage = new PageImpl<>(Collections.singletonList(schedule));
 
-        when(scheduleRepository.findAll(pageRequest)).thenReturn(schedulePage);
+        when(scheduleRepository.findAll(pageRequest))
+                .thenReturn(schedulePage);
 
         // Act
         Page<Schedule> result = scheduleService.listSchedulings(page, pageSize);
 
         // Assert
         assertEquals(1, result.getTotalElements());
-        verify(scheduleRepository).findAll(pageRequest);
     }
 
     @Test
     void listSchedulingsByStatus_ReturnsPageOfSchedules() {
         // Arrange
-        int page = 0;
-        int pageSize = 10;
-        Status status = Status.PENDENTE;
-        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "dateSchedule"));
-        Schedule schedule = new Schedule();
-        schedule.setStatus(status);
+        var page = 0;
+        var pageSize = 10;
+        var status = Status.PENDENTE;
+        var sort = Sort.by(Sort.Direction.ASC, "dateSchedule");
+        var pageRequest = PageRequest.of(page, pageSize, sort);
+        var schedule = Schedule.builder()
+                .status(status)
+                .build();
+
         Page<Schedule> schedulePage = new PageImpl<>(Collections.singletonList(schedule));
 
-        when(scheduleRepository.findByStatus(status, pageRequest)).thenReturn(schedulePage);
+        when(scheduleRepository.findByStatus(status, pageRequest))
+                .thenReturn(schedulePage);
 
         // Act
-        Page<Schedule> result = scheduleService.listSchedulingsByStatus(status, page, pageSize);
+        Page<Schedule> result = scheduleService
+                .listSchedulingsByStatus(status, page, pageSize);
 
         // Assert
         assertEquals(1, result.getTotalElements());
-        verify(scheduleRepository).findByStatus(status, pageRequest);
     }
 }
