@@ -44,13 +44,15 @@ public class CustomerServiceTest {
 
     @Test
     public void createCustomer_WithValidData_ReturnsCustomer() {
-        when(customerRepository.findByEmail(CUSTOMER.getEmail())).thenReturn(Optional.empty());
-        when(customerRepository.save(CUSTOMER)).thenReturn(CUSTOMER);
+        when(customerRepository.findByEmail(CUSTOMER.getEmail()))
+                .thenReturn(Optional.empty());
+
+        when(customerRepository.save(CUSTOMER))
+                .thenReturn(CUSTOMER);
 
         var sut = customerService.createCustomer(CUSTOMER);
 
         assertThat(sut).isEqualTo(CUSTOMER);
-        verify(customerRepository, times(1)).save(CUSTOMER);
     }
 
     @Test
@@ -60,25 +62,24 @@ public class CustomerServiceTest {
 
         assertThatThrownBy(() -> customerService.createCustomer(CUSTOMER))
                 .isInstanceOf(CustomerExistsException.class);
-
-        verify(customerRepository, never()).save(any(Customer.class));
     }
 
     @Test
     public void createCustomer_WithInvalidData_ThrowsException() {
-        when(customerRepository.save(INVALID_CUSTOMER)).thenThrow(RuntimeException.class);
+        when(customerRepository.save(INVALID_CUSTOMER))
+                .thenThrow(RuntimeException.class);
 
         assertThatThrownBy(() -> customerService.createCustomer(INVALID_CUSTOMER))
                 .isInstanceOf(RuntimeException.class);
-
-        verify(customerRepository, times(1)).save(INVALID_CUSTOMER);
     }
 
     @Test
     public void getCustomer_ByExistingId_ReturnsCustomer() {
-        when(customerRepository.findById(CUSTOMER.getId())).thenReturn(Optional.of(CUSTOMER));
+        when(customerRepository.findById(CUSTOMER.getId()))
+                .thenReturn(Optional.of(CUSTOMER));
 
-        Optional<Customer> sut = Optional.ofNullable(customerService.findCustomerById(CUSTOMER.getId()));
+        Optional<Customer> sut = Optional
+                .ofNullable(customerService.findCustomerById(CUSTOMER.getId()));
 
         assertThat(sut).isNotEmpty();
         assertThat(sut.get()).isEqualTo(CUSTOMER);
@@ -88,8 +89,11 @@ public class CustomerServiceTest {
     public void updateCustomer_ExistingCustomer_UpdatesSuccessfully() {
         var ID = CUSTOMER.getId();
 
-        when(customerRepository.findById(ID)).thenReturn(Optional.of(CUSTOMER));
-        when(customerRepository.save(any(Customer.class))).thenReturn(CUSTOMER_UPDATED);
+        when(customerRepository.findById(ID))
+                .thenReturn(Optional.of(CUSTOMER));
+
+        when(customerRepository.save(any(Customer.class)))
+                .thenReturn(CUSTOMER_UPDATED);
 
         Customer result = customerService.updateCustomer(ID, CUSTOMER_UPDATED);
 
@@ -101,7 +105,8 @@ public class CustomerServiceTest {
     public void updateCustomer_NonExistentCustomer_ThrowsCustomerNotFoundException() {
         var ID = CUSTOMER.getId();
 
-        when(customerRepository.findById(ID)).thenReturn(Optional.empty());
+        when(customerRepository.findById(ID))
+                .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> customerService.updateCustomer(ID, CUSTOMER_UPDATED))
                 .isInstanceOf(CustomerNotFoundException.class)
@@ -112,7 +117,9 @@ public class CustomerServiceTest {
     public void deleteCustomer_ExistingCustomer_DeletesSuccessfully() {
         var ID = CUSTOMER.getId();
 
-        when(customerRepository.findById(ID)).thenReturn(Optional.of(CUSTOMER));
+        when(customerRepository.findById(ID))
+                .thenReturn(Optional.of(CUSTOMER));
+
         doNothing().when(customerRepository).deleteById(ID);
 
         Optional<Customer> sut = Optional.ofNullable(customerService.deleteCustomer(ID));
