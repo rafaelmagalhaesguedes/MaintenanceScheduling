@@ -31,8 +31,7 @@ public class ScheduleController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do agendamento encontrado")
     public ScheduleCustomerResponse findScheduleById(@PathVariable @Min(1) Long scheduleId) throws ScheduleNotFoundException {
         return ScheduleCustomerResponse.fromEntity(
-                scheduleService.findScheduleById(scheduleId)
-        );
+                scheduleService.findScheduleById(scheduleId));
     }
 
     @PutMapping("/{scheduleId}")

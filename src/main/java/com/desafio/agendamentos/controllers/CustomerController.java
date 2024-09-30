@@ -48,8 +48,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente encontrado")
     public CustomerResponse findCustomerById(@PathVariable @Min(1) Long customerId) throws CustomerNotFoundException {
         return CustomerResponse.fromEntity(
-                customerService.findCustomerById(customerId)
-        );
+                customerService.findCustomerById(customerId));
     }
 
     @PutMapping("/{customerId}")
@@ -57,8 +56,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente atualizado")
     public CustomerResponse updateCustomer(@PathVariable @Min(1) Long customerId, @RequestBody @Valid CustomerRequest request) throws CustomerNotFoundException {
         return CustomerResponse.fromEntity(
-                customerService.updateCustomer(customerId, request.toEntity())
-        );
+                customerService.updateCustomer(customerId, request.toEntity()));
     }
 
     @DeleteMapping("/{customerId}")
@@ -66,8 +64,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente deletado")
     public CustomerResponse deleteCustomer(@PathVariable @Min(1) Long customerId) throws CustomerNotFoundException {
         return CustomerResponse.fromEntity(
-                customerService.deleteCustomer(customerId)
-        );
+                customerService.deleteCustomer(customerId));
     }
 
     @PutMapping("/{customerId}/address")
@@ -75,8 +72,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do endereço atualizado")
     public AddressResponse updateCustomerAddress(@PathVariable @Min(1) Long customerId, @RequestBody AddressRequest addressRequest) throws CustomerNotFoundException, AddressNotFoundException {
         return AddressResponse.fromEntity(
-                customerService.updateCustomerAddress(customerId, addressRequest.toEntity())
-        );
+                customerService.updateCustomerAddress(customerId, addressRequest.toEntity()));
     }
 
     @PostMapping("/{customerId}/vehicle")
@@ -120,8 +116,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "201", description = "Retorna dados agendamento criado")
     public ScheduleCustomerResponse createCustomerSchedule(@PathVariable @Min(1) Long customerId, @RequestBody ScheduleRequest request) throws CustomerNotFoundException {
         return ScheduleCustomerResponse.fromEntity(
-                customerService.createCustomerSchedule(customerId, request.toEntity())
-        );
+                customerService.createCustomerSchedule(customerId, request.toEntity()));
     }
 
     @GetMapping("/{customerId}/schedule")
