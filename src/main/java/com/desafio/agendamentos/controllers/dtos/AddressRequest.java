@@ -10,6 +10,12 @@ public record AddressRequest(
         String uf
 ) {
     public Address toEntity() {
-        return new Address(cep, logradouro, bairro, localidade, uf);
+        return Address.builder()
+            .cep(cep)
+            .street(logradouro)
+            .neighborhood(bairro)
+            .city(localidade)
+            .state(uf)
+            .build();
     }
 }

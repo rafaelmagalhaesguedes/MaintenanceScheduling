@@ -30,15 +30,15 @@ public record CustomerRequest(
 ) {
     public Customer toEntity() {
         var setCep = Address.builder()
-                .cep(cep)
-                .build();
+            .cep(cep)
+            .build();
 
         return Customer.builder()
-                .name(name)
-                .email(email)
-                .numberPhone(numberPhone)
-                .rawDocument(document)
-                .address(setCep)
-                .build();
+            .name(name)
+            .email(email)
+            .numberPhone(numberPhone)
+            .rawDocument(document)
+            .address(setCep)
+            .build();
     }
 }

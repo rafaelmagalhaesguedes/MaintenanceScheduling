@@ -11,11 +11,11 @@ public record AddressResponse(
 ) {
     public static AddressResponse fromEntity(Address address) {
         return new AddressResponse(
-                address.getCep(),
-                address.getStreet(),
-                address.getNeighborhood(),
-                address.getCity(),
-                address.getState()
+            address.getCep(),
+            address.getStreet(),
+            address.getNeighborhood(),
+            address.getCity(),
+            address.getState()
         );
     }
 }

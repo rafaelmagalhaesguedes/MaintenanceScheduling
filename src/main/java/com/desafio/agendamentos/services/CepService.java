@@ -45,15 +45,13 @@ public class CepService {
      * @return Objeto Address preenchido com os dados do endereço.
      */
     private static Address getAddress(Customer customer, AddressResponse addressResponse) {
-        Address address = new Address();
-
-        address.setCep(addressResponse.cep());
-        address.setStreet(addressResponse.logradouro());
-        address.setNeighborhood(addressResponse.bairro());
-        address.setCity(addressResponse.localidade());
-        address.setState(addressResponse.uf());
-        address.setCustomer(customer);
-
-        return address;
+        return Address.builder()
+            .cep(addressResponse.cep())
+            .street(addressResponse.logradouro())
+            .neighborhood(addressResponse.bairro())
+            .city(addressResponse.localidade())
+            .state(addressResponse.uf())
+            .customer(customer)
+            .build();
     }
 }

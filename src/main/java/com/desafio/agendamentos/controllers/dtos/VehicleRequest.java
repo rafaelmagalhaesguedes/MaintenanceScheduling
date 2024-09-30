@@ -21,10 +21,10 @@ public record VehicleRequest(
 ) {
     public Vehicle toEntity() {
         return Vehicle.builder()
-                .licensePlate(licensePlate.toUpperCase().replaceAll("[\\s-]+", ""))
-                .model(model)
-                .manufacturer(manufacturer)
-                .year(year)
-                .build();
+             .licensePlate(licensePlate.toUpperCase().replaceAll("[\\s-]+", ""))
+             .model(model)
+             .manufacturer(manufacturer)
+             .year(year)
+             .build();
     }
 }

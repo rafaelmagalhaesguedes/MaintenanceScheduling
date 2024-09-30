@@ -17,18 +17,18 @@ public record CustomerResponse(
 ) {
     public static CustomerResponse fromEntity(Customer customer) {
         return new CustomerResponse(
-                customer.getId(),
-                customer.getName(),
-                customer.getEmail(),
-                customer.getNumberPhone(),
-                customer.getRawDocument(),
-                AddressResponse.fromEntity(customer.getAddress()),
-                customer.getVehicles().stream()
-                        .map(VehicleResponse::fromEntity)
-                        .collect(Collectors.toList()),
-                customer.getAppointments().stream()
-                        .map(ScheduleResponse::fromEntity)
-                        .collect(Collectors.toList())
+            customer.getId(),
+            customer.getName(),
+            customer.getEmail(),
+            customer.getNumberPhone(),
+            customer.getRawDocument(),
+            AddressResponse.fromEntity(customer.getAddress()),
+            customer.getVehicles().stream()
+                    .map(VehicleResponse::fromEntity)
+                    .collect(Collectors.toList()),
+            customer.getAppointments().stream()
+                    .map(ScheduleResponse::fromEntity)
+                    .collect(Collectors.toList())
         );
     }
 }
