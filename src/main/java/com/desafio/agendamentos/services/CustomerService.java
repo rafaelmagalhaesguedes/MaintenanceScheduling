@@ -255,6 +255,7 @@ public class CustomerService {
         // Formata data e hora
         var dateSchedule = formatScheduleDate(schedule.getDateSchedule());
 
+        // Cria novo agendamento
         var newSchedule = Schedule.builder()
                 .customer(customer)
                 .descriptionService(schedule.getDescriptionService())
