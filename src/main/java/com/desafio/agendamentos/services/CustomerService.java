@@ -1,6 +1,7 @@
 package com.desafio.agendamentos.services;
 
 import static com.desafio.agendamentos.services.validations.ScheduleValidation.validateScheduleDate;
+import static com.desafio.agendamentos.services.validations.StatusValidation.validateStatus;
 import static com.desafio.agendamentos.services.validations.VehicleValidation.vehicleCreationValidate;
 
 import com.desafio.agendamentos.entities.Address;
@@ -17,6 +18,7 @@ import com.desafio.agendamentos.repositories.VehicleRepository;
 
 import com.desafio.agendamentos.services.exceptions.*;
 
+import com.desafio.agendamentos.services.validations.StatusValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,14 +36,16 @@ public class CustomerService {
     private final VehicleRepository vehicleRepository;
     private final ScheduleRepository scheduleRepository;
     private final AddressRepository addressRepository;
+    private final ScheduleService scheduleService;
     private final CepService cepService;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, VehicleRepository vehicleRepository, ScheduleRepository scheduleRepository, AddressRepository addressRepository, CepService cepService) {
+    public CustomerService(CustomerRepository customerRepository, VehicleRepository vehicleRepository, ScheduleRepository scheduleRepository, AddressRepository addressRepository, ScheduleService scheduleService, CepService cepService) {
         this.customerRepository = customerRepository;
         this.vehicleRepository = vehicleRepository;
         this.scheduleRepository = scheduleRepository;
         this.addressRepository = addressRepository;
+        this.scheduleService = scheduleService;
         this.cepService = cepService;
     }
 
@@ -277,6 +281,42 @@ public class CustomerService {
         return scheduleRepository.findScheduleByCustomerId(customerId)
                 .stream()
                 .toList();
+    }
+
+    /**
+     * Cancela um agendamento associado a um cliente
+     *
+     * @param customerId ID do cliente.
+     * @param scheduleId ID do agendamento.
+     * @param status Status do agendamento.
+     * @return Dados do agendamento cancelado.
+     * @throws StatusValidateException Se o status estiver inválido
+     */
+    public Schedule cancelCustomerSchedule(Long customerId, Long scheduleId, Status status) throws StatusValidateException, CustomerNotFoundException, ScheduleNotFoundException {
+        // Busca o agendamento por ID
+        var scheduleFromDb = scheduleService.findScheduleById(scheduleId);
+
+        // Valida o status
+        validateStatus(status);
+
+        // Verifica se o agendamento está associado ao cliente
+        if (!scheduleFromDb.getCustomer().getId().equals(customerId)) {
+            throw new StatusValidateException("Schedule not found for customer with id: " + customerId);
+        }
+
+        // Verifica se o Status é o correto para atualização
+        if (status != Status.CANCELADO) {
+            throw new StatusValidateException("Invalid status for cancellation");
+        }
+
+        // Atualiza o status
+        scheduleFromDb.setStatus(Status.CANCELADO);
+
+        // Salva o agendamento com status atualizado
+        scheduleRepository.save(scheduleFromDb);
+
+        // Retorna agendamento com status atualizado
+        return scheduleFromDb;
     }
 
     /**

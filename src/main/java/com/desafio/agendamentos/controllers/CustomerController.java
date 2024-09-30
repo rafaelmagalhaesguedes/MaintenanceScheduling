@@ -7,6 +7,8 @@ import com.desafio.agendamentos.controllers.dtos.customer.CustomerRequest;
 import com.desafio.agendamentos.controllers.dtos.customer.CustomerResponse;
 import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleCustomerResponse;
 import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleRequest;
+import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleResponse;
+import com.desafio.agendamentos.controllers.dtos.status.StatusRequest;
 import com.desafio.agendamentos.controllers.dtos.vehicle.VehicleRequest;
 import com.desafio.agendamentos.controllers.dtos.vehicle.VehicleResponse;
 import com.desafio.agendamentos.services.CustomerService;
@@ -127,5 +129,15 @@ public class CustomerController {
                 .stream()
                 .map(ScheduleCustomerResponse::fromEntity)
                 .toList();
+    }
+
+    @PutMapping("/{customerId}/schedule/{scheduleId}")
+    @Operation(summary = "Cancelar agendamento", description = "Cancelar um agendamento associado a um cliente.")
+    @ApiResponse(responseCode = "200", description = "Retorna dados agendamento cancelado")
+    public ScheduleResponse cancelCustomerSchedule(@PathVariable @Min(1) Long customerId,
+                                                   @PathVariable @Min(1) Long scheduleId,
+                                                   @RequestBody StatusRequest request) throws StatusValidateException {
+        return ScheduleResponse.fromEntity(
+                customerService.cancelCustomerSchedule(customerId, scheduleId, request.status()));
     }
 }
