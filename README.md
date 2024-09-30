@@ -118,9 +118,7 @@ Lista com os principais endpoints da aplicação
     "bairro": "Candelária",
     "localidade": "Belo Horizonte",
     "uf": "MG"
-  },
-  "vehicles": [],
-  "schedules": []
+  }
 }
 ```
 
