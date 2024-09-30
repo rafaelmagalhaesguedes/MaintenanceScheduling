@@ -202,7 +202,7 @@ public class CustomerService {
         vehicle.setLicensePlate(vehicleDetails.getLicensePlate());
         vehicle.setModel(vehicleDetails.getModel());
         vehicle.setManufacturer(vehicleDetails.getManufacturer());
-        vehicle.setYear(vehicleDetails.getYear());
+        vehicle.setVehicleYear(vehicleDetails.getVehicleYear());
         vehicle.setCustomer(customer);
 
         return vehicleRepository.save(vehicle);

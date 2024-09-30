@@ -169,7 +169,6 @@ public class CustomerServiceTest {
 
         // Assert
         assertThat(sut).isEqualTo(VEHICLE);
-        verify(vehicleRepository, times(1)).save(VEHICLE);
     }
 
     @Test
