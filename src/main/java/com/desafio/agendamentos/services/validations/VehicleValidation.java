@@ -7,8 +7,10 @@ import java.time.Year;
 
 public class VehicleValidation {
 
-    // Regex para validação de placas veículares
-    private static final String LICENSE_PLATE_PATTERN = "[A-Z]{3}[0-9][A-Z][0-9]{2}";
+    // Regex para validação de placas veículares no formato antigo e mercosul
+    // Formato antigo: AAA1234
+    // Formato mercosul: AAA1A23
+    private static final String LICENSE_PLATE_PATTERN = "^[A-Z]{3}[0-9]{4}$|^[A-Z]{3}[0-9][A-Z][0-9]{2}$";
 
     // Seta o ano mínimo dos veículos aceitos na loja
     private static final Integer VEHICLE_YEAR = 1886;
