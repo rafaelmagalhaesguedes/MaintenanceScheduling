@@ -6,7 +6,7 @@ public class VehicleMocks {
     public static final Vehicle VEHICLE = Vehicle.builder()
             .id(1L)
             .model("Model 1")
-            .licensePlate("ABC-1234")
+            .licensePlate("ABC1A34")
             .manufacturer("Brand 1")
             .year(2020)
             .customer(CustomerMocks.CUSTOMER)
@@ -15,7 +15,7 @@ public class VehicleMocks {
     public static final Vehicle VEHICLE_UPDATED = Vehicle.builder()
             .id(1L)
             .model("Fiat 147")
-            .licensePlate("GHI-9101")
+            .licensePlate("GHI9A01")
             .manufacturer("Fiat")
             .year(1977)
             .customer(CustomerMocks.CUSTOMER) // Assuming the customer remains the same
