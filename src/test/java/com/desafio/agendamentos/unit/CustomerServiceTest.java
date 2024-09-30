@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.entities.Vehicle;
-import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.CustomerRepository;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
 import com.desafio.agendamentos.repositories.VehicleRepository;
@@ -20,10 +19,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.scheduling.SchedulingException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
