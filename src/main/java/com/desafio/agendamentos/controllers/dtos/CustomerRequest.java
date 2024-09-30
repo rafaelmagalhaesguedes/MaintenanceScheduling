@@ -29,8 +29,16 @@ public record CustomerRequest(
         String cep
 ) {
     public Customer toEntity() {
-        Address address = new Address();
-        address.setCep(cep);
-        return new Customer(name, email, numberPhone, document, address);
+        var setCep = Address.builder()
+                .cep(cep)
+                .build();
+
+        return Customer.builder()
+                .name(name)
+                .email(email)
+                .numberPhone(numberPhone)
+                .rawDocument(document)
+                .address(setCep)
+                .build();
     }
 }

@@ -248,11 +248,12 @@ public class CustomerService {
         // Formata data e hora
         var dateSchedule = formatScheduleDate(schedule.getDateSchedule());
 
-        var newSchedule = new Schedule();
-        newSchedule.setCustomer(customer);
-        newSchedule.setDescriptionService(schedule.getDescriptionService());
-        newSchedule.setDateSchedule(dateSchedule);
-        newSchedule.setStatus(Status.PENDENTE);
+        var newSchedule = Schedule.builder()
+                .customer(customer)
+                .descriptionService(schedule.getDescriptionService())
+                .dateSchedule(dateSchedule)
+                .status(Status.PENDENTE)
+                .build();
 
         return scheduleRepository.save(newSchedule);
     }

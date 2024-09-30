@@ -7,7 +7,8 @@ public record VehicleResponse(
         String licensePlate,
         String model,
         String make,
-        Integer year
+        Integer year,
+        CustomerVehicleResponse customer
 ) {
     public static VehicleResponse fromEntity(Vehicle vehicle) {
         return new VehicleResponse(
@@ -15,7 +16,8 @@ public record VehicleResponse(
                 vehicle.getLicensePlate(),
                 vehicle.getModel(),
                 vehicle.getMake(),
-                vehicle.getYear()
+                vehicle.getYear(),
+                CustomerVehicleResponse.fromEntity(vehicle.getCustomer())
         );
     }
 }
