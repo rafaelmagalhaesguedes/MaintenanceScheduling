@@ -3,20 +3,27 @@ package com.desafio.agendamentos.unit;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.desafio.agendamentos.entities.Customer;
+import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.entities.Vehicle;
+import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.CustomerRepository;
+import com.desafio.agendamentos.repositories.ScheduleRepository;
 import com.desafio.agendamentos.repositories.VehicleRepository;
 import com.desafio.agendamentos.services.CepService;
 import com.desafio.agendamentos.services.CustomerService;
 import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
+import com.desafio.agendamentos.services.exceptions.SchedulingDateException;
 import com.desafio.agendamentos.services.exceptions.VehicleNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.scheduling.SchedulingException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +43,9 @@ public class CustomerServiceTest {
 
     @Mock
     private VehicleRepository vehicleRepository;
+
+    @Mock
+    private ScheduleRepository scheduleRepository;
 
     @InjectMocks
     private CustomerService customerService;
@@ -293,5 +303,85 @@ public class CustomerServiceTest {
         assertThatThrownBy(() -> customerService
                 .deleteCustomerVehicle(CUSTOMER.getId(), VEHICLE.getId()))
                 .isInstanceOf(VehicleNotFoundException.class);
+    }
+
+    @Test
+    public void createCustomerSchedule_WithValidData_ReturnsSchedule() throws CustomerNotFoundException {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+
+        var schedule = Schedule.builder()
+                .descriptionService("Service Description")
+                .dateSchedule(LocalDateTime.now().plusDays(1))
+                .build();
+
+        when(customerRepository.findById(customerId))
+                .thenReturn(Optional.of(CUSTOMER));
+
+        when(scheduleRepository.save(any(Schedule.class)))
+                .thenReturn(schedule);
+
+        // Act
+        Schedule result = customerService.createCustomerSchedule(customerId, schedule);
+
+        // Assert
+        assertThat(result).isNotNull();
+        assertThat(result.getDateSchedule()).isEqualTo(schedule.getDateSchedule());
+        assertThat(result.getDescriptionService()).isEqualTo(schedule.getDescriptionService());
+        assertThat(result.getStatus()).isEqualTo(schedule.getStatus());
+        assertThat(result.getCustomer()).isEqualTo(schedule.getCustomer());
+    }
+
+    @Test
+    public void createCustomerSchedule_WithNonExistentCustomer_ThrowsCustomerNotFoundException() {
+        // Arrange
+        var customerId = 99999999111223334L;  // ID false
+        Schedule schedule = Schedule.builder()
+                .descriptionService("Service Description")
+                .dateSchedule(LocalDateTime.now().plusDays(1))
+                .build();
+
+        when(customerRepository.findById(customerId))
+                .thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> customerService.createCustomerSchedule(customerId, schedule))
+                .isInstanceOf(CustomerNotFoundException.class);
+    }
+
+    @Test
+    public void createCustomerSchedule_WithNoVehicles_ThrowsVehicleNotFoundException() {
+        // Arrange
+        var customerId = INVALID_CUSTOMER.getId();
+
+        var schedule = Schedule.builder()
+                .descriptionService("Service Description")
+                .dateSchedule(LocalDateTime.now().plusDays(1))
+                .build();
+
+        when(customerRepository.findById(customerId))
+                .thenReturn(Optional.of(INVALID_CUSTOMER));
+
+        // Act & Assert
+        assertThatThrownBy(() -> customerService.createCustomerSchedule(customerId, schedule))
+                .isInstanceOf(VehicleNotFoundException.class);
+    }
+
+    @Test
+    public void createCustomerSchedule_WithInvalidDate_ThrowsException() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+
+        var schedule = Schedule.builder()
+                .descriptionService("Service Description")
+                .dateSchedule(LocalDateTime.now().minusDays(1)) // Invalid date (past date)
+                .build();
+
+        when(customerRepository.findById(customerId))
+                .thenReturn(Optional.of(CUSTOMER));
+
+        // Act & Assert
+        assertThatThrownBy(() -> customerService.createCustomerSchedule(customerId, schedule))
+                .isInstanceOf(SchedulingDateException.class);
     }
 }
