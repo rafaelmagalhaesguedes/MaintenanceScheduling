@@ -28,7 +28,7 @@ Para instalar e usar o projeto tenha em sua máquina os seguintes requisitos:
 ```bash
   mkdir microsservicoAgendamento/
   cd microsservicoAgendamento/
-  git clone git@github.com:rafaelmagalhaesguedes/MicrosservicoAgendamentos.git
+  git clone git@github.com:rafaelmagalhaesguedes/MicrosservicoAgendamento.git
 ```
 
 2. Rodando o projeto com Docker:
@@ -86,7 +86,7 @@ Lista com os principais endpoints da aplicação
 | <kbd>GET /customers/{customerId}</kbd>           | Busca os dados de um cliente
 | <kbd>PUT /customers/{customerId}/address</kbd>   | Atualiza um endereço associado a um cliente
 | <kbd>PUT /scheduling</kbd>                       | Atualiza o Status da reserva
-| <kbd>GET /scheduling</kbd>                       | Lista os agendamentos com paginação
+| <kbd>GET /scheduling</kbd>                       | Lista os agendamentos com páginação
 | <kbd>GET /scheduling/status</kbd>                | Lista agendamentos filtrados por status com paginação
 
 
