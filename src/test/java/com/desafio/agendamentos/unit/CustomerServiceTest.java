@@ -335,7 +335,7 @@ public class CustomerServiceTest {
     @Test
     public void createCustomerSchedule_WithNonExistentCustomer_ThrowsCustomerNotFoundException() {
         // Arrange
-        var customerId = 99999999111223334L;  // ID false
+        var customerId = 99999999111223334L;  // Invalid ID
         Schedule schedule = Schedule.builder()
                 .descriptionService("Service Description")
                 .dateSchedule(LocalDateTime.now().plusDays(1))
