@@ -24,7 +24,7 @@ public record VehicleRequest(
              .licensePlate(licensePlate.toUpperCase().replaceAll("[\\s-]+", ""))
              .model(model)
              .manufacturer(manufacturer)
-             .year(year)
+             .vehicleYear(year)
              .build();
     }
 }

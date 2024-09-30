@@ -8,7 +8,7 @@ public class VehicleMocks {
             .model("Model 1")
             .licensePlate("ABC1A34")
             .manufacturer("Brand 1")
-            .year(2020)
+            .vehicleYear(2020)
             .customer(CustomerMocks.CUSTOMER)
             .build();
 
@@ -17,7 +17,7 @@ public class VehicleMocks {
             .model("Fiat 147")
             .licensePlate("GHI9A01")
             .manufacturer("Fiat")
-            .year(1977)
+            .vehicleYear(1977)
             .customer(CustomerMocks.CUSTOMER) // Assuming the customer remains the same
             .build();
 }

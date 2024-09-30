@@ -17,7 +17,7 @@ public class VehicleValidation {
 
     public static void vehicleCreationValidate(Vehicle vehicle) throws VehicleValidateException {
         validateLicensePlate(vehicle.getLicensePlate());
-        validateYear(vehicle.getYear());
+        validateYear(vehicle.getVehicleYear());
     }
 
     private static void validateLicensePlate(String licensePlate) throws VehicleValidateException {
@@ -29,7 +29,7 @@ public class VehicleValidation {
     private static void validateYear(Integer year) throws VehicleValidateException {
         int currentYear = Year.now().getValue();
         if (year == null || year < VEHICLE_YEAR || year > currentYear) {
-            throw new VehicleValidateException("Invalid year");
+            throw new VehicleValidateException("Invalid vehicleYear");
         }
     }
 }
