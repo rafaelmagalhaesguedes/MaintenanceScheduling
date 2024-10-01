@@ -35,12 +35,11 @@ public class ScheduleController {
     }
 
     @PutMapping("/{scheduleId}")
-    @Operation(summary = "Atualizar Status Agendamento", description = "Atualizar status do agendamento")
+    @Operation(summary = "Finalizar Agendamento", description = "Atualizar agendamento para realizado")
     @ApiResponse(responseCode = "200", description = "Retorna os dados do agendamento com status atualizado")
-    public ScheduleCustomerResponse updateScheduleStatus(@PathVariable Long scheduleId,
-                                                         @RequestBody StatusRequest statusRequest) throws ScheduleNotFoundException, StatusValidateException {
+    public ScheduleCustomerResponse finalizeScheduling(@PathVariable Long scheduleId) throws ScheduleNotFoundException {
         return ScheduleCustomerResponse.fromEntity(
-                scheduleService.updateScheduleStatus(scheduleId, statusRequest.status()));
+                scheduleService.updateScheduleStatus(scheduleId));
     }
 
     @GetMapping

@@ -36,20 +36,16 @@ public class ScheduleService {
     }
 
     /**
-     * Atualiza o Status do Agendamento.
+     * Atualiza um agendamento como realizado.
      *
      * @param scheduleId Id do agendamento.
-     * @param status Status do agendamento.
      * @return agendamento com status atualizado.
      */
-    public Schedule updateScheduleStatus(Long scheduleId, Status status) throws ScheduleNotFoundException, StatusValidateException {
+    public Schedule updateScheduleStatus(Long scheduleId) throws ScheduleNotFoundException {
         var scheduleFromDb = findScheduleById(scheduleId);
 
-        // Valida status
-        validateStatus(status);
-
-        // Atualiza status
-        scheduleFromDb.setStatus(status);
+        // Atualiza status para serviço REALIZADO
+        scheduleFromDb.setStatus(Status.REALIZADO);
 
         return scheduleRepository.save(scheduleFromDb);
     }

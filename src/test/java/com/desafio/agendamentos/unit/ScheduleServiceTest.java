@@ -76,7 +76,7 @@ public class ScheduleServiceTest {
                 .thenReturn(schedule);
 
         // Act
-        var result = scheduleService.updateScheduleStatus(scheduleId, Status.REALIZADO);
+        var result = scheduleService.updateScheduleStatus(scheduleId);
 
         // Assert
         assertEquals(Status.REALIZADO, result.getStatus());
@@ -92,7 +92,7 @@ public class ScheduleServiceTest {
 
         // Act & Assert
         assertThrows(ScheduleNotFoundException.class, () -> scheduleService
-                .updateScheduleStatus(scheduleId, Status.REALIZADO));
+                .updateScheduleStatus(scheduleId));
     }
 
     @Test
