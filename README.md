@@ -47,7 +47,7 @@ O serviço estará disponível na porta 8080 em seu localhost
 
 1. Abra seu navegador ou API client e acesse http://localhost:8080/
 
-## Tecnologias utilizadas
+## Tecnologias
 
 - Java 17
 
@@ -64,6 +64,22 @@ O serviço estará disponível na porta 8080 em seu localhost
 - Beekeeper Studio (Interface para gerenciar banco de dados)
 
 - Insomnia Client (API Client)
+
+## Padrões de Projeto
+
+- **Builder:** utilizamos o padrão criacional builder para construir objetos de forma mais controlada.
+
+- **Strategy:** utilizamos o padrão strategy para auxiliar na validação de dados sensíveis.
+
+## Testes
+
+O projeto possui testes unitários para garantir a qualidade e a funcionalidade do código.
+
+Para rodar os testes use o comando no terminal na raiz do projeto:
+
+```
+mvn test
+```
 
 ## Documentação
 
