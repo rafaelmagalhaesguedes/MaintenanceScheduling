@@ -1,11 +1,9 @@
 package com.desafio.agendamentos.controllers;
 
 import com.desafio.agendamentos.controllers.dtos.schedule.ScheduleCustomerResponse;
-import com.desafio.agendamentos.controllers.dtos.status.StatusRequest;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.services.ScheduleService;
 import com.desafio.agendamentos.services.exceptions.ScheduleNotFoundException;
-import com.desafio.agendamentos.services.exceptions.StatusValidateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;

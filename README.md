@@ -77,17 +77,18 @@ O projeto utiliza encriptação para os dados sensíveis da aplicação, para fa
 
 Lista com os principais endpoints da aplicação
 
-| Rota                                             | Descrição                                          
-|--------------------------------------------------|-----------------------------------------------------
-| <kbd>POST /customers</kbd>                       | Cria um novo cliente
-| <kbd>POST /customers/{customerId}/vehicle</kbd>  | Cria um veículo associado a um cliente
-| <kbd>POST /customers/{customerId}/schedule</kbd> | Cria um agendamento associado a um cliente
-| <kbd>GET /customers/{customerId}/schedule</kbd>  | Lista os agendamento associados a um cliente
-| <kbd>GET /customers/{customerId}</kbd>           | Busca os dados de um cliente
-| <kbd>PUT /customers/{customerId}/address</kbd>   | Atualiza um endereço associado a um cliente
-| <kbd>PUT /scheduling</kbd>                       | Atualiza o Status da reserva
-| <kbd>GET /scheduling</kbd>                       | Lista os agendamentos com páginação
-| <kbd>GET /scheduling/status</kbd>                | Lista agendamentos filtrados por status com paginação
+| Rota                                                         | Descrição                                          
+|--------------------------------------------------------------|-----------------------------------------------------
+| <kbd>POST /customers</kbd>                                   | Cria um novo cliente
+| <kbd>POST /customers/{customerId}/vehicle</kbd>              | Cria um veículo associado a um cliente
+| <kbd>POST /customers/{customerId}/schedule</kbd>             | Cria um agendamento associado a um cliente
+| <kbd>GET /customers/{customerId}/schedule</kbd>              | Lista os agendamento associados a um cliente
+| <kbd>GET /customers/{customerId}</kbd>                       | Busca os dados de um cliente
+| <kbd>PUT /customers/{customerId}/schedule/{scheduleId}</kbd> | Cancela um agendamento associado a um cliente
+| <kbd>PUT /customers/{customerId}/address</kbd>               | Atualiza um endereço associado a um cliente
+| <kbd>PUT /scheduling</kbd>                                   | Atualiza o Status da reserva
+| <kbd>GET /scheduling</kbd>                                   | Lista os agendamentos com páginação
+| <kbd>GET /scheduling/status</kbd>                            | Lista agendamentos filtrados por status com paginação
 
 
 ## Cria um cliente

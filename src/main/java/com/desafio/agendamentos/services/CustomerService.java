@@ -1,8 +1,8 @@
 package com.desafio.agendamentos.services;
 
-import static com.desafio.agendamentos.services.validations.ScheduleValidation.validateScheduleDate;
-import static com.desafio.agendamentos.services.validations.StatusValidation.validateStatus;
-import static com.desafio.agendamentos.services.validations.VehicleValidation.vehicleCreationValidate;
+import static com.desafio.agendamentos.services.validations.schedule.ScheduleValidation.validateScheduleDate;
+import static com.desafio.agendamentos.services.validations.status.StatusValidation.validateStatus;
+import static com.desafio.agendamentos.services.validations.vehicle.VehicleValidation.vehicleCreationValidate;
 
 import com.desafio.agendamentos.entities.Address;
 import com.desafio.agendamentos.entities.Customer;
@@ -18,7 +18,6 @@ import com.desafio.agendamentos.repositories.VehicleRepository;
 
 import com.desafio.agendamentos.services.exceptions.*;
 
-import com.desafio.agendamentos.services.validations.StatusValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

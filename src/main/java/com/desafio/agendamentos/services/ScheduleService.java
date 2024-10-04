@@ -4,15 +4,11 @@ import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
 import com.desafio.agendamentos.services.exceptions.ScheduleNotFoundException;
-import com.desafio.agendamentos.services.exceptions.StatusValidateException;
-import com.desafio.agendamentos.services.validations.StatusValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import static com.desafio.agendamentos.services.validations.StatusValidation.validateStatus;
 
 @Service
 public class ScheduleService {

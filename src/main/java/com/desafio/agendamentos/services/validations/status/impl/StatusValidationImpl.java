@@ -1,11 +1,12 @@
-package com.desafio.agendamentos.services.validations;
+package com.desafio.agendamentos.services.validations.status.impl;
 
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.services.exceptions.StatusValidateException;
+import com.desafio.agendamentos.services.validations.status.IStatusValidationStrategy;
 
-public class StatusValidation {
-
-    public static void validateStatus(Status status) throws StatusValidateException {
+public class StatusValidationImpl implements IStatusValidationStrategy {
+    @Override
+    public void validate(Status status) throws StatusValidateException {
         if (status == null || !isValidStatus(status)) {
             throw new StatusValidateException("Invalid status value: " + status);
         }
