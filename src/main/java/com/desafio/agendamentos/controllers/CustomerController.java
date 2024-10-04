@@ -108,8 +108,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do veículo deletado")
     public VehicleResponse deleteCustomerVehicle(@PathVariable @Min(1) Long customerId, @PathVariable @Min(1) Long vehicleId) throws CustomerNotFoundException, VehicleNotFoundException {
         return VehicleResponse.fromEntity(
-                customerService.deleteCustomerVehicle(customerId, vehicleId)
-        );
+                customerService.deleteCustomerVehicle(customerId, vehicleId) );
     }
 
     @PostMapping("/{customerId}/schedule")
