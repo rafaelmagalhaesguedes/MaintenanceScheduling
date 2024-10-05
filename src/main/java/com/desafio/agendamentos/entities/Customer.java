@@ -35,11 +35,12 @@ public class Customer extends User {
     private List<Schedule> appointments = new ArrayList<>();
 
     @Builder
-    public Customer(String name, String email, String password, Role role, String rawDocument, String numberPhone, Address address) {
-        super(name, email, password, role);
+    public Customer(Long id, String name, String email, String password, Role role, String rawDocument, String numberPhone, Address address, List<Vehicle> vehicle) {
+        super(id, name, email, password, role);
         this.numberPhone = numberPhone;
         this.rawDocument = rawDocument;
         this.address = address;
+        this.vehicles = vehicle;
     }
 
     @PrePersist

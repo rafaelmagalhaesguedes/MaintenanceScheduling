@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -31,6 +32,9 @@ public class CustomerServiceTest {
     @Mock
     private CepService cepService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private CustomerServiceImpl customerService;
 
@@ -39,8 +43,15 @@ public class CustomerServiceTest {
     @Test
     public void createCustomer_WithValidData_ReturnsCustomer() {
         // Arrange
-        when(customerRepository.findByEmail(CUSTOMER.getEmail())).thenReturn(Optional.empty());
-        when(customerRepository.save(CUSTOMER)).thenReturn(CUSTOMER);
+        when(customerRepository.findByEmail(CUSTOMER.getEmail()))
+                .thenReturn(Optional.empty());
+
+        when(passwordEncoder.encode(CUSTOMER.getPassword()))
+                .thenReturn("encodedPassword");
+
+        when(customerRepository.save(CUSTOMER))
+                .thenReturn(CUSTOMER);
+
         doNothing().when(cepService).fillAddress(CUSTOMER);
 
         // Act
