@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ScheduleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Criar agendamento", description = "Criar um agendamento associado a um cliente.")
     @ApiResponse(responseCode = "201", description = "Retorna dados agendamento criado")
@@ -40,6 +42,7 @@ public class ScheduleController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @Operation(summary = "Listar agendamentos", description = "Listar os agendamentos associados a um cliente.")
     @ApiResponse(responseCode = "200", description = "Retorna lista de agendamentos")
     public List<ScheduleCustomerResponse> findCustomerSchedule(
@@ -53,6 +56,7 @@ public class ScheduleController {
     }
 
     @PutMapping("/{scheduleId}")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @Operation(summary = "Cancelar agendamento", description = "Cancelar um agendamento associado a um cliente.")
     @ApiResponse(responseCode = "200", description = "Retorna dados agendamento cancelado")
     public ScheduleResponse cancelCustomerSchedule(
