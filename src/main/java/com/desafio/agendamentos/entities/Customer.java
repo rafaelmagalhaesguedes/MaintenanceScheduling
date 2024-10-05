@@ -1,5 +1,6 @@
 package com.desafio.agendamentos.entities;
 
+import com.desafio.agendamentos.enums.Role;
 import com.desafio.agendamentos.services.CryptoService;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,23 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_customers")
+@DiscriminatorValue("CUSTOMER")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Customer {
+public class Customer extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    private String name;
-
-    @Column(unique = true)
-    private String email;
-
+    @Column(name = "numberPhone")
     private String numberPhone;
 
     @Column(name = "document")
@@ -41,6 +33,14 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> appointments = new ArrayList<>();
+
+    @Builder
+    public Customer(String name, String email, String password, Role role, String rawDocument, String numberPhone, Address address) {
+        super(name, email, password, role);
+        this.numberPhone = numberPhone;
+        this.rawDocument = rawDocument;
+        this.address = address;
+    }
 
     @PrePersist
     @PreUpdate

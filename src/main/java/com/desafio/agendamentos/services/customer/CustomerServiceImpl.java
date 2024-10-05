@@ -2,12 +2,14 @@ package com.desafio.agendamentos.services.customer;
 
 import com.desafio.agendamentos.entities.Customer;
 
+import com.desafio.agendamentos.enums.Role;
 import com.desafio.agendamentos.repositories.CustomerRepository;
 
 import com.desafio.agendamentos.services.CepService;
 import com.desafio.agendamentos.services.exceptions.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +18,13 @@ public class CustomerServiceImpl implements ICustomerService {
 
     private final CustomerRepository customerRepository;
     private final CepService cepService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CepService cepService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CepService cepService, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.cepService = cepService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -42,6 +46,10 @@ public class CustomerServiceImpl implements ICustomerService {
         if (customer.getAddress() != null && customer.getAddress().getCep() != null) {
             cepService.fillAddress(customer);
         }
+
+        var encodedPassword = passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(encodedPassword);
+        customer.setRole(Role.CUSTOMER);
 
         return customerRepository.save(customer);
     }
@@ -72,8 +80,6 @@ public class CustomerServiceImpl implements ICustomerService {
     public Customer updateCustomer(Long customerId, Customer customer) throws CustomerNotFoundException {
         var customerFromDb = findCustomerById(customerId);
 
-        customerFromDb.setName(customer.getName());
-        customerFromDb.setEmail(customer.getEmail());
         customerFromDb.setNumberPhone(customer.getNumberPhone());
 
         if (customer.getAddress() != null && customer.getAddress().getCep() != null) {
