@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Customer extends User {
 
-    @Column(name = "numberPhone")
+    @Column(name = "number_phone")
     private String numberPhone;
 
     @Column(name = "document")

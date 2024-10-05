@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manager")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class ManagerController {
     private final IManagerService managerService;
 
@@ -28,7 +29,6 @@ public class ManagerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create a new manager")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Manager created successfully"),
@@ -43,7 +43,6 @@ public class ManagerController {
     }
 
     @GetMapping("/{managerId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Get a manager by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Manager found"),
@@ -56,7 +55,6 @@ public class ManagerController {
     }
 
     @PutMapping("/{managerId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     @Operation(summary = "Update manager by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Manager updated successfully"),
@@ -72,7 +70,6 @@ public class ManagerController {
     }
 
     @PatchMapping("/{managerId}/active-status")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update the active status of an manager")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Manager active status updated successfully"),
@@ -88,7 +85,6 @@ public class ManagerController {
     }
 
     @DeleteMapping("/{managerId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Soft delete an manager by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Manager deleted successfully"),

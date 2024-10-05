@@ -17,30 +17,4 @@ public class ManagerMocks {
             .isActive(true)
             .isDelete(false)
             .build();
-
-    public static final Manager INACTIVE_MANAGER = Manager.managerBuilder()
-            .id(2L)
-            .name("Jane Doe")
-            .email("jane.doe@example.com")
-            .password("password")
-            .role(Role.MANAGER)
-            .register("654321")
-            .department("HR")
-            .location("Los Angeles")
-            .isActive(false)
-            .isDelete(false)
-            .build();
-
-    public static final Manager DELETED_MANAGER = Manager.managerBuilder()
-            .id(3L)
-            .name("Jim Beam")
-            .email("jim.beam@example.com")
-            .password("password")
-            .role(Role.MANAGER)
-            .register("789012")
-            .department("Finance")
-            .location("Chicago")
-            .isActive(true)
-            .isDelete(true)
-            .build();
 }
