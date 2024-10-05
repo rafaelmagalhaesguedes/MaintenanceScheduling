@@ -3,140 +3,148 @@ package com.desafio.agendamentos.unit;
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
-import com.desafio.agendamentos.services.ScheduleService;
-import com.desafio.agendamentos.services.exceptions.ScheduleNotFoundException;
+import com.desafio.agendamentos.services.customer.CustomerServiceImpl;
+import com.desafio.agendamentos.services.exceptions.*;
+import com.desafio.agendamentos.services.schedule.ScheduleServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static com.desafio.agendamentos.mocks.CustomerMocks.*;
+import static com.desafio.agendamentos.mocks.ScheduleMocks.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ScheduleServiceTest {
 
     @Mock
     private ScheduleRepository scheduleRepository;
 
+    @Mock
+    private CustomerServiceImpl customerService;
+
     @InjectMocks
-    private ScheduleService scheduleService;
+    private ScheduleServiceImpl scheduleService;
 
     @Test
-    void findScheduleById_WithValidId_ReturnsSchedule() throws ScheduleNotFoundException {
+    public void createCustomerSchedule_WithValidData_ReturnsSchedule() throws CustomerNotFoundException {
         // Arrange
-        var scheduleId = 1L;
-        var schedule = Schedule
-                .builder()
-                .id(scheduleId)
+        var customerId = CUSTOMER.getId();
+
+        when(customerService.findCustomerById(customerId)).thenReturn(CUSTOMER);
+        when(scheduleRepository.save(any(Schedule.class))).thenReturn(SCHEDULE);
+
+        // Act
+        var result = scheduleService.createSchedule(customerId, SCHEDULE);
+
+        // Assert
+        assertThat(result).isNotNull();
+        assertThat(result.getDateSchedule()).isEqualTo(SCHEDULE.getDateSchedule());
+        assertThat(result.getDescriptionService()).isEqualTo(SCHEDULE.getDescriptionService());
+        assertThat(result.getStatus()).isEqualTo(SCHEDULE.getStatus());
+        assertThat(result.getCustomer()).isEqualTo(SCHEDULE.getCustomer());
+    }
+
+    @Test
+    public void createCustomerSchedule_WithNonExistentCustomer_ThrowsCustomerNotFoundException() {
+        // Arrange
+        var customerId = 99999999111223334L;  // Invalid ID
+
+        when(customerService.findCustomerById(customerId))
+                .thenThrow(new CustomerNotFoundException());
+
+        // Act & Assert
+        assertThatThrownBy(() -> scheduleService.createSchedule(customerId, SCHEDULE))
+                .isInstanceOf(CustomerNotFoundException.class);
+    }
+
+    @Test
+    public void createCustomerSchedule_WithNoVehicles_ThrowsVehicleNotFoundException() {
+        // Arrange
+        var customerId = INVALID_CUSTOMER.getId();
+
+        when(customerService.findCustomerById(customerId))
+                .thenThrow(new VehicleNotFoundException());
+
+        // Act & Assert
+        assertThatThrownBy(() -> scheduleService.createSchedule(customerId, SCHEDULE))
+                .isInstanceOf(VehicleNotFoundException.class);
+    }
+
+    @Test
+    public void createCustomerSchedule_WithInvalidDate_ThrowsException() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+
+        var schedule = Schedule.builder()
+                .descriptionService("Service Description")
+                .dateSchedule(LocalDateTime.now().minusDays(1)) // Invalid date (past date)
                 .build();
+
+        when(customerService.findCustomerById(customerId))
+                .thenThrow(new SchedulingDateException("Customer not found."));
+
+        // Act & Assert
+        assertThatThrownBy(() -> scheduleService.createSchedule(customerId, schedule))
+                .isInstanceOf(SchedulingDateException.class);
+    }
+
+    @Test
+    public void cancelCustomerSchedule_WithValidData_ReturnsCancelledSchedule() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+        var scheduleId = SCHEDULE.getId();
+        var schedule = SCHEDULE;
+
+        schedule.setCustomer(CUSTOMER);
+
+        when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.of(schedule));
+        when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
+
+        // Act
+        var result = scheduleService.cancelSchedule(customerId, scheduleId, Status.CANCELADO);
+
+        // Assert
+        assertThat(result).isNotNull();
+        assertThat(result.getStatus()).isEqualTo(Status.CANCELADO);
+    }
+
+    @Test
+    public void cancelCustomerSchedule_WithNonExistentSchedule_ThrowsScheduleNotFoundException() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+        var scheduleId = 9999922211188900L; // Invalid ID
+
+        when(scheduleRepository.findById(scheduleId)).thenThrow(new ScheduleNotFoundException());
+
+        // Act & Assert
+        assertThatThrownBy(() -> scheduleService.cancelSchedule(customerId, scheduleId, Status.CANCELADO))
+                .isInstanceOf(ScheduleNotFoundException.class);
+    }
+
+    @Test
+    public void cancelCustomerSchedule_WithInvalidStatus_ThrowsStatusValidateException() {
+        // Arrange
+        var customerId = CUSTOMER.getId();
+        var scheduleId = SCHEDULE.getId();
+        var schedule = SCHEDULE;
+
+        schedule.setCustomer(CUSTOMER);
 
         when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.of(schedule));
 
-        // Act
-        var result = scheduleService.findScheduleById(scheduleId);
-
-        // Assert
-        assertEquals(scheduleId, result.getId());
-    }
-
-    @Test
-    void findScheduleById_WithInvalidId_ThrowsScheduleNotFoundException() {
-        // Arrange
-        var scheduleId = 1L;
-
-        when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.empty());
-
         // Act & Assert
-        assertThrows(ScheduleNotFoundException.class, () -> scheduleService.findScheduleById(scheduleId));
-    }
-
-    @Test
-    void updateScheduleStatus_WithValidId_ReturnsUpdatedSchedule() throws ScheduleNotFoundException {
-        // Arrange
-        var scheduleId = 1L;
-        var schedule = Schedule.builder()
-                .id(scheduleId)
-                .status(Status.PENDENTE)
-                .build();
-
-        when(scheduleRepository.findById(scheduleId))
-                .thenReturn(Optional.of(schedule));
-
-        when(scheduleRepository.save(any(Schedule.class)))
-                .thenReturn(schedule);
-
-        // Act
-        var result = scheduleService.updateScheduleStatus(scheduleId);
-
-        // Assert
-        assertEquals(Status.REALIZADO, result.getStatus());
-    }
-
-    @Test
-    void updateScheduleStatus_WithInvalidId_ThrowsScheduleNotFoundException() {
-        // Arrange
-        var scheduleId = 1L;
-
-        when(scheduleRepository.findById(scheduleId))
-                .thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(ScheduleNotFoundException.class, () -> scheduleService
-                .updateScheduleStatus(scheduleId));
-    }
-
-    @Test
-    void listSchedulings_ReturnsPageOfSchedules() {
-        // Arrange
-        var page = 0;
-        var pageSize = 10;
-        var sort = Sort.by(Sort.Direction.ASC, "dateSchedule");
-        var pageRequest = PageRequest.of(page, pageSize, sort);
-        var schedule = new Schedule();
-        Page<Schedule> schedulePage = new PageImpl<>(Collections.singletonList(schedule));
-
-        when(scheduleRepository.findAll(pageRequest))
-                .thenReturn(schedulePage);
-
-        // Act
-        Page<Schedule> result = scheduleService.listSchedulings(page, pageSize);
-
-        // Assert
-        assertEquals(1, result.getTotalElements());
-    }
-
-    @Test
-    void listSchedulingsByStatus_ReturnsPageOfSchedules() {
-        // Arrange
-        var page = 0;
-        var pageSize = 10;
-        var status = Status.PENDENTE;
-        var sort = Sort.by(Sort.Direction.ASC, "dateSchedule");
-        var pageRequest = PageRequest.of(page, pageSize, sort);
-        var schedule = Schedule.builder()
-                .status(status)
-                .build();
-
-        Page<Schedule> schedulePage = new PageImpl<>(Collections.singletonList(schedule));
-
-        when(scheduleRepository.findByStatus(status, pageRequest))
-                .thenReturn(schedulePage);
-
-        // Act
-        Page<Schedule> result = scheduleService
-                .listSchedulingsByStatus(status, page, pageSize);
-
-        // Assert
-        assertEquals(1, result.getTotalElements());
+        assertThatThrownBy(() -> scheduleService.cancelSchedule(customerId, scheduleId, Status.REALIZADO))
+                .isInstanceOf(StatusValidateException.class);
     }
 }

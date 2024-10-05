@@ -10,12 +10,14 @@ public class ScheduleValidation {
     public static void validateScheduleDate(LocalDateTime dateSchedule) throws SchedulingDateException {
         var validator = new ScheduleValidator();
 
+        // Adiciona as estratégias para validação
         validator.addStrategy(new PastDateValidation());
         validator.addStrategy(new OneHourAheadValidation());
         validator.addStrategy(new WorkingHoursValidation());
         validator.addStrategy(new SaturdayValidation());
         validator.addStrategy(new SundayValidation());
 
+        // Valida as estratégias selecionadas
         validator.validate(dateSchedule);
     }
 }

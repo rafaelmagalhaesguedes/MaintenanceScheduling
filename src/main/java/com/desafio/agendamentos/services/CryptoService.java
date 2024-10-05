@@ -10,7 +10,6 @@ public class CryptoService {
     private static final StrongTextEncryptor encryptor;
     private static final String SECRET_KEY = "mySecretKeyToEncrypt";
 
-    // Inicializa o encryptor com a chave secreta
     static {
         encryptor = new StrongTextEncryptor();
         encryptor.setPassword(SECRET_KEY);
