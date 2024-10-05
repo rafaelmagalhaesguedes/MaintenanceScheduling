@@ -11,13 +11,13 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class Admin extends User {
-    private boolean isActive;
-    private boolean isDeleted;
+    private Boolean isActive = true;
+    private Boolean isDeleted = false;
 
     @Builder
-    public Admin(Long id, String name, String email, String password, Role role) {
+    public Admin(Long id, String name, String email, String password, Role role, Boolean isActive, Boolean isDeleted) {
         super(id, name, email, password, role);
-        this.isActive = true;
-        this.isDeleted = false;
+        this.isActive = isActive;
+        this.isDeleted = isDeleted;
     }
 }
