@@ -3,6 +3,7 @@ package com.desafio.agendamentos.controllers;
 import com.desafio.agendamentos.controllers.dtos.customer.CustomerCreationResponse;
 import com.desafio.agendamentos.controllers.dtos.customer.CustomerRequest;
 import com.desafio.agendamentos.controllers.dtos.customer.CustomerResponse;
+import com.desafio.agendamentos.controllers.dtos.customer.CustomerUpdateRequest;
 import com.desafio.agendamentos.services.customer.ICustomerService;
 import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
@@ -55,7 +56,7 @@ public class CustomerController {
     @ApiResponse(responseCode = "200", description = "Retorna os dados do cliente atualizado")
     public CustomerResponse updateCustomer(
             @PathVariable @Min(1) Long customerId,
-            @RequestBody @Valid CustomerRequest request
+            @RequestBody @Valid CustomerUpdateRequest request
     ) throws CustomerNotFoundException {
         var customerUpdated = customerService.updateCustomer(customerId, request.toEntity());
 

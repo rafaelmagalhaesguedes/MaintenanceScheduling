@@ -75,7 +75,6 @@ public class CustomerServiceImpl implements ICustomerService {
         customerFromDb.setName(customer.getName());
         customerFromDb.setEmail(customer.getEmail());
         customerFromDb.setNumberPhone(customer.getNumberPhone());
-        customerFromDb.setRawDocument(customer.getRawDocument());
 
         if (customer.getAddress() != null && customer.getAddress().getCep() != null) {
             cepService.fillAddress(customer);

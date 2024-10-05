@@ -1,0 +1,38 @@
+package com.desafio.agendamentos.controllers.dtos.customer;
+
+import com.desafio.agendamentos.entities.Address;
+import com.desafio.agendamentos.entities.Customer;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+public record CustomerUpdateRequest(
+        @NotBlank(message = "Name is mandatory")
+        @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
+        String name,
+
+        @NotBlank(message = "Email is mandatory")
+        @Email(message = "Email should be valid")
+        String email,
+
+        @NotBlank(message = "Phone number is mandatory")
+        @Pattern(regexp = "\\d{11,13}", message = "Phone number should be between 11 and 13 digits")
+        String numberPhone,
+
+        @Pattern(regexp = "\\d{8}", message = "CEP should be exactly 8 digits")
+        String cep
+) {
+    public Customer toEntity() {
+        var setCep = Address.builder()
+            .cep(cep)
+            .build();
+
+        return Customer.builder()
+            .name(name)
+            .email(email)
+            .numberPhone(numberPhone)
+            .address(setCep)
+            .build();
+    }
+}

@@ -155,7 +155,7 @@ Lista com os principais endpoints da aplicação
   "id": 1,
   "licensePlate": "RWT9988",
   "model": "HB20",
-  "make": "Hyundai",
+  "manufacturer": "Hyundai",
   "year": 2022
 }
 ```
