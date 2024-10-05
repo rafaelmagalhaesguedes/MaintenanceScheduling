@@ -32,15 +32,15 @@ public class CustomerServiceImpl implements ICustomerService {
      *
      * @param customer Dados do cliente.
      * @return Dados do cliente criado.
-     * @throws CustomerExistsException Se o cliente já existir no sistema.
+     * @throws UserExistsException Se o cliente já existir no sistema.
      */
     @Override
     @Transactional
-    public Customer createCustomer(Customer customer) throws CustomerExistsException {
+    public Customer createCustomer(Customer customer) throws UserExistsException {
         var customerExists = customerRepository.findByEmail(customer.getEmail());
 
         if (customerExists.isPresent()) {
-            throw new CustomerExistsException();
+            throw new UserExistsException();
         }
 
         if (customer.getAddress() != null && customer.getAddress().getCep() != null) {

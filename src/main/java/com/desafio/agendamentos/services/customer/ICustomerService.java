@@ -14,9 +14,9 @@ public interface ICustomerService {
      *
      * @param customer o cliente a ser criado
      * @return o cliente criado
-     * @throws CustomerExistsException se o cliente já existir
+     * @throws UserExistsException se o cliente já existir
      */
-    Customer createCustomer(Customer customer) throws CustomerExistsException;
+    Customer createCustomer(Customer customer) throws UserExistsException;
 
     /**
      * Encontra um cliente pelo ID.

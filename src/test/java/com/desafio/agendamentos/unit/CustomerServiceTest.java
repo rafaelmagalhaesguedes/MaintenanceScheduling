@@ -4,7 +4,7 @@ import com.desafio.agendamentos.entities.Customer;
 import com.desafio.agendamentos.repositories.CustomerRepository;
 import com.desafio.agendamentos.services.CepService;
 import com.desafio.agendamentos.services.customer.CustomerServiceImpl;
-import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
+import com.desafio.agendamentos.services.exceptions.UserExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,7 +68,7 @@ public class CustomerServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> customerService.createCustomer(CUSTOMER))
-                .isInstanceOf(CustomerExistsException.class);
+                .isInstanceOf(UserExistsException.class);
     }
 
     @Test

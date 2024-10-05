@@ -44,8 +44,8 @@ public class GlobalControllerAdvice {
      * @param ex Exceção lançada quando o cliente já existe.
      * @return Resposta HTTP com mensagem de conflito.
      */
-    @ExceptionHandler(CustomerExistsException.class)
-    public ResponseEntity<String> handleCustomerExists(CustomerExistsException ex) {
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<String> handleCustomerExists(UserExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }

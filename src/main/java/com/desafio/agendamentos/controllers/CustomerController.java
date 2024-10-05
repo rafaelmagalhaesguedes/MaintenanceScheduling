@@ -5,7 +5,7 @@ import com.desafio.agendamentos.controllers.dtos.customer.CustomerRequest;
 import com.desafio.agendamentos.controllers.dtos.customer.CustomerResponse;
 import com.desafio.agendamentos.controllers.dtos.customer.CustomerUpdateRequest;
 import com.desafio.agendamentos.services.customer.ICustomerService;
-import com.desafio.agendamentos.services.exceptions.CustomerExistsException;
+import com.desafio.agendamentos.services.exceptions.UserExistsException;
 import com.desafio.agendamentos.services.exceptions.CustomerNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,7 +34,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerCreationResponse createCustomer(
             @RequestBody @Valid CustomerRequest request
-    ) throws CustomerExistsException {
+    ) throws UserExistsException {
         var newCustomer = customerService.createCustomer(request.toEntity());
 
         return CustomerCreationResponse.fromEntity(newCustomer);
