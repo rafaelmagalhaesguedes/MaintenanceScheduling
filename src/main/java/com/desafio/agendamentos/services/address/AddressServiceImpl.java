@@ -19,12 +19,6 @@ public class AddressServiceImpl implements IAddressService {
     private final AddressRepository addressRepository;
     private final ICustomerService customerService;
 
-    /**
-     * Constrói um AddressServiceImpl com o AddressRepository e ICustomerService especificados.
-     *
-     * @param addressRepository o AddressRepository a ser usado
-     * @param customerService o ICustomerService a ser usado
-     */
     @Autowired
     public AddressServiceImpl(AddressRepository addressRepository, ICustomerService customerService) {
         this.addressRepository = addressRepository;

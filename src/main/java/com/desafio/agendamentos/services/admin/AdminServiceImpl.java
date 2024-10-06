@@ -27,6 +27,12 @@ public class AdminServiceImpl implements IAdminService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Cria um novo administrador.
+     *
+     * @param admin o administrador a ser criado
+     * @throws UserExistsException se o administrador já existir
+     */
     @Override
     @Transactional
     public void create(Admin admin) {

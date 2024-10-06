@@ -23,18 +23,38 @@ public class MechanicServiceImpl implements IMechanicService {
         this.mechanicRepository = mechanicRepository;
     }
 
+    /**
+     * Cria um novo mecânico.
+     *
+     * @param mechanic o mecânico a ser criado
+     * @return o mecânico criado
+     */
     @Override
     @Transactional
     public Mechanic create(Mechanic mechanic) {
         return mechanicRepository.save(mechanic);
     }
 
+    /**
+     * Encontra um mecânico pelo ID.
+     *
+     * @param mechanicId o ID do mecânico
+     * @return o mecânico encontrado
+     * @throws MechanicNotFoundException se o mecânico não for encontrado
+     */
     @Override
     public Mechanic findById(Long mechanicId) throws MechanicNotFoundException {
         return mechanicRepository.findById(mechanicId)
                 .orElseThrow(MechanicNotFoundException::new);
     }
 
+    /**
+     * Atualiza um mecânico existente.
+     *
+     * @param mechanicId o ID do mecânico
+     * @param mechanic os detalhes do mecânico a serem atualizados
+     * @throws MechanicNotFoundException se o mecânico não for encontrado
+     */
     @Override
     @Transactional
     public void update(Long mechanicId, Mechanic mechanic) throws MechanicNotFoundException {
@@ -49,11 +69,22 @@ public class MechanicServiceImpl implements IMechanicService {
         mechanicRepository.save(existingMechanic);
     }
 
+    /**
+     * Encontra todos os mecânicos.
+     *
+     * @return uma lista de todos os mecânicos
+     */
     @Override
     public List<Mechanic> findAll() {
         return mechanicRepository.findAll();
     }
 
+    /**
+     * Deleta um mecânico pelo ID.
+     *
+     * @param mechanicId o ID do mecânico
+     * @throws MechanicNotFoundException se o mecânico não for encontrado
+     */
     @Override
     @Transactional
     public void delete(Long mechanicId) throws MechanicNotFoundException {

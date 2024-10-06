@@ -24,12 +24,6 @@ public class VehicleServiceImpl implements IVehicleService {
     private final VehicleRepository vehicleRepository;
     private final ICustomerService customerService;
 
-    /**
-     * Constrói um VehicleServiceImpl com o VehicleRepository e ICustomerService especificados.
-     *
-     * @param vehicleRepository o VehicleRepository a ser usado
-     * @param customerService o ICustomerService a ser usado
-     */
     @Autowired
     public VehicleServiceImpl(VehicleRepository vehicleRepository, ICustomerService customerService) {
         this.vehicleRepository = vehicleRepository;

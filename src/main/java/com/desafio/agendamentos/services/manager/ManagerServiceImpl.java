@@ -27,6 +27,13 @@ public class ManagerServiceImpl implements IManagerService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Cria um novo gerente.
+     *
+     * @param manager o gerente a ser criado
+     * @return o gerente criado
+     * @throws UserExistsException se o gerente já existir
+     */
     @Override
     @Transactional
     public Manager create(Manager manager) throws UserExistsException {
@@ -42,12 +49,26 @@ public class ManagerServiceImpl implements IManagerService {
         return managerRepository.save(manager);
     }
 
+    /**
+     * Encontra um gerente pelo ID.
+     *
+     * @param managerId o ID do gerente
+     * @return o gerente encontrado
+     * @throws ManagerNotFoundException se o gerente não for encontrado
+     */
     @Override
     public Manager findById(Long managerId) throws ManagerNotFoundException {
         return managerRepository.findById(managerId)
                 .orElseThrow(ManagerNotFoundException::new);
     }
 
+    /**
+     * Atualiza um gerente existente.
+     *
+     * @param managerId o ID do gerente
+     * @param manager os detalhes do gerente a serem atualizados
+     * @throws ManagerNotFoundException se o gerente não for encontrado
+     */
     @Override
     public void update(Long managerId, Manager manager) throws ManagerNotFoundException {
         var managerFromDb = findById(managerId);
@@ -61,6 +82,13 @@ public class ManagerServiceImpl implements IManagerService {
         managerRepository.save(managerFromDb);
     }
 
+    /**
+     * Atualiza o status de atividade de um gerente.
+     *
+     * @param managerId o ID do gerente
+     * @param activeStatus o novo status de atividade
+     * @throws ManagerNotFoundException se o gerente não for encontrado
+     */
     @Override
     public void updateActiveStatus(Long managerId, boolean activeStatus) throws ManagerNotFoundException {
         var manager = findById(managerId);
@@ -69,6 +97,12 @@ public class ManagerServiceImpl implements IManagerService {
         managerRepository.save(manager);
     }
 
+    /**
+     * Realiza a exclusão lógica de um gerente.
+     *
+     * @param managerId o ID do gerente
+     * @throws ManagerNotFoundException se o gerente não for encontrado
+     */
     @Override
     public void softDelete(Long managerId) throws ManagerNotFoundException {
         var manager = findById(managerId);
