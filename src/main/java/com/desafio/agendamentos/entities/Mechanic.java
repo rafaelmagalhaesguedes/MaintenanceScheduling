@@ -35,5 +35,5 @@ public class Mechanic {
     private String register;
 
     @OneToMany(mappedBy = "mechanic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ServiceOrder> serviceOrders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 }

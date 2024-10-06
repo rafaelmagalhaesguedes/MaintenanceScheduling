@@ -16,8 +16,8 @@ public class Manager extends Admin {
     private String location;
 
     @Builder(builderMethodName = "managerBuilder")
-    public Manager(Long id, String name, String email, String password, Role role, Boolean isActive, Boolean isDelete, String register, String department, String location) {
-        super(id, name, email, password, role, isActive, isDelete);
+    public Manager(Long id, String name, String email, String password, Role role, Boolean isActive, Boolean isDeleted, String register, String department, String location) {
+        super(id, name, email, password, role, isActive, isDeleted);
         this.register = register;
         this.department = department;
         this.location = location;

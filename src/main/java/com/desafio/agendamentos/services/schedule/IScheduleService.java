@@ -44,4 +44,14 @@ public interface IScheduleService {
      * @throws ScheduleNotFoundException se o agendamento não for encontrado
      */
     Schedule cancelSchedule(Long customerId, Long scheduleId, Status status) throws StatusValidateException, CustomerNotFoundException, ScheduleNotFoundException;
+
+    /**
+     * Encontra todos os agendamentos com paginação.
+     *
+     * @param pageNumber o número da página a ser recuperada
+     * @param pageSize o número de itens por página
+     * @return uma lista de agendamentos
+     * @throws ScheduleNotFoundException se nenhum agendamento for encontrado
+     */
+    List<Schedule> findAllSchedules(int pageNumber, int pageSize) throws ScheduleNotFoundException;
 }

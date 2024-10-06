@@ -8,6 +8,9 @@ import com.desafio.agendamentos.services.exceptions.*;
 import com.desafio.agendamentos.services.validations.schedule.ScheduleValidation;
 import com.desafio.agendamentos.services.validations.status.StatusValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,6 +118,22 @@ public class ScheduleServiceImpl implements IScheduleService {
         scheduleRepository.save(scheduleFromDb);
 
         return scheduleFromDb;
+    }
+
+    /**
+     * Encontra todos os agendamentos com paginação.
+     *
+     * @param pageNumber o número da página a ser recuperada
+     * @param pageSize   o número de itens por página
+     * @return uma lista de agendamentos
+     * @throws ScheduleNotFoundException se nenhum agendamento for encontrado
+     */
+    @Override
+    public List<Schedule> findAllSchedules(int pageNumber, int pageSize) throws ScheduleNotFoundException {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Schedule> page = scheduleRepository.findAll(pageable);
+
+        return page.getContent();
     }
 
     /**
