@@ -15,6 +15,6 @@ public class ManagerMocks {
             .department("IT")
             .location("New York")
             .isActive(true)
-            .isDelete(false)
+            .isDeleted(false)
             .build();
 }
