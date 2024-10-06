@@ -15,7 +15,6 @@ public class OrderMocks {
             .schedule(Schedule.builder().id(1L).build())
             .manager((Manager) Manager.builder().id(1L).build())
             .mechanic(Mechanic.builder().id(1L).build())
-            .description("Oil change")
             .createdAt(LocalDateTime.now())
             .status(OrderStatus.PENDING)
             .build();
@@ -25,7 +24,6 @@ public class OrderMocks {
             .schedule(Schedule.builder().id(1L).build())
             .manager((Manager) Manager.builder().id(1L).build())
             .mechanic(Mechanic.builder().id(1L).build())
-            .description("Updated description")
             .createdAt(LocalDateTime.now())
             .status(OrderStatus.IN_PROGRESS)
             .build();

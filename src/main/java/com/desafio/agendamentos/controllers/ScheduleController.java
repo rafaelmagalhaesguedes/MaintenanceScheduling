@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
-@PreAuthorize("hasAuthority('MANAGER')")
 public class ScheduleController {
 
     private final IScheduleService scheduleService;
@@ -29,7 +28,53 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
+    @PostMapping("/customer/{customerId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
+    @Operation(summary = "Criar agendamento", description = "Criar um agendamento associado a um cliente.")
+    @ApiResponse(responseCode = "201", description = "Retorna dados agendamento criado")
+    public ScheduleCustomerResponse createCustomerSchedule(
+            @PathVariable @Min(1) Long customerId,
+            @RequestBody ScheduleRequest request
+    ) throws CustomerNotFoundException {
+        var newSchedule = scheduleService
+                .createSchedule(customerId, request.toEntity());
+
+        return ScheduleCustomerResponse.fromEntity(newSchedule);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
+    @Operation(summary = "Listar agendamentos", description = "Listar os agendamentos associados a um cliente.")
+    @ApiResponse(responseCode = "200", description = "Retorna lista de agendamentos")
+    public List<ScheduleCustomerResponse> findCustomerSchedule(
+            @PathVariable @Min(1) Long customerId
+    ) throws ScheduleNotFoundException {
+        var listSchedules = scheduleService
+                .findSchedulesByCustomerId(customerId);
+
+        return listSchedules.stream()
+                .map(ScheduleCustomerResponse::fromEntity)
+                .toList();
+    }
+
+    @PutMapping("/{scheduleId}/customer/{customerId}")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
+    @Operation(summary = "Cancelar agendamento", description = "Cancelar um agendamento associado a um cliente.")
+    @ApiResponse(responseCode = "200", description = "Retorna dados agendamento cancelado")
+    public ScheduleResponse cancelCustomerSchedule(
+            @PathVariable @Min(1) Long customerId,
+            @PathVariable @Min(1) Long scheduleId,
+            @RequestBody StatusRequest request
+    ) throws StatusValidateException {
+        var updatedSchedule = scheduleService
+                .cancelSchedule(customerId, scheduleId, request.status());
+
+        return ScheduleResponse.fromEntity(updatedSchedule);
+    }
+
     @GetMapping
+    @PreAuthorize("hasAuthority('MANAGER')")
     @Operation(summary = "Listar agendamentos", description = "Listar os agendamentos com paginação.")
     @ApiResponse(responseCode = "200", description = "Retorna lista de agendamentos paginados")
     public List<ScheduleCustomerResponse> findAllSchedules(

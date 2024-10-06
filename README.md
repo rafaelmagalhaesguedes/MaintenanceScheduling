@@ -1,4 +1,4 @@
-# Microsserviço de Agendamento
+# Maintenance Scheduling
 
 <div>
   <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
@@ -9,7 +9,21 @@
 
 ## Descrição
 
-Este projeto engloba um simples microsserviço para gerenciar o agendamento de manutenções em veículos.
+Este projeto é um microsserviço desenvolvido para gerenciar o agendamento de manutenções em veículos. 
+Ele oferece uma API RESTful que permite a criação, atualização, visualização e cancelamento de agendamentos, além de 
+gerenciar informações de clientes e veículos associados. A autenticação e autorização são implementadas 
+com base em roles (papéis) de usuário, como `MANAGER` e `CUSTOMER`, utilizando tokens JWT (JSON Web Tokens) para
+garantir a segurança dos dados e controle de acesso.
+
+
+## Principais Funcionalidades
+
+- **Gerenciamento de Clientes**: Criação, atualização e visualização de informações de clientes.
+- **Gerenciamento de Veículos**: Associação de veículos aos clientes, permitindo a criação e atualização de informações dos veículos.
+- **Agendamento de Manutenções**: Criação, visualização, atualização e cancelamento de agendamentos de manutenções.
+- **Autenticação e Autorização**: Controle de acesso baseado em roles de usuário (`MANAGER` e `CUSTOMER`), garantindo que apenas usuários autorizados possam acessar determinados endpoints.
+- **Documentação da API**: Utilização do Swagger para fornecer uma documentação interativa e fácil de usar dos endpoints da API.
+- **Testes Unitários**: Cobertura de testes para garantir a qualidade e a funcionalidade do código.
 
 ## Instruções de instalação
 
@@ -81,6 +95,15 @@ Para rodar os testes use o comando no terminal na raiz do projeto:
 mvn test
 ```
 
+## Autenticação e Autorização
+
+O projeto implementa autenticação de usuários com diferentes roles (papéis) para controlar o
+acesso aos endpoints. As roles disponíveis são:
+
+- __ADMIN:__ Administrador geral do sistema.
+- __MANAGER:__ Gerente que pode gerenciar agendamentos e clientes.
+- __CUSTOMER:__ Cliente que pode criar e visualizar seus próprios agendamentos e veículos.
+
 ## Documentação
 
 O projeto utiliza o Swagger para documentação dos endpoints, acesse [neste link](http://localhost:8080/swagger-ui/index.html#/).
@@ -95,17 +118,18 @@ Lista com os principais endpoints da aplicação
 
 | Rota                                                         | Descrição                                          
 |--------------------------------------------------------------|-----------------------------------------------------
-| <kbd>POST /customers</kbd>                                   | Cria um novo cliente
-| <kbd>POST /customers/{customerId}/vehicle</kbd>              | Cria um veículo associado a um cliente
-| <kbd>POST /customers/{customerId}/schedule</kbd>             | Cria um agendamento associado a um cliente
-| <kbd>GET /customers/{customerId}/schedule</kbd>              | Lista os agendamento associados a um cliente
-| <kbd>GET /customers/{customerId}</kbd>                       | Busca os dados de um cliente
-| <kbd>PUT /customers/{customerId}/schedule/{scheduleId}</kbd> | Cancela um agendamento associado a um cliente
-| <kbd>PUT /customers/{customerId}/address</kbd>               | Atualiza um endereço associado a um cliente
+| <kbd>POST /customer</kbd>                                    | Cria um novo cliente
+| <kbd>POST /auth/login</kbd>                     | Authentica o usuário no sistema
+| <kbd>POST /vehicle/customer/{customerId}</kbd>               | Cria um veículo associado a um cliente
+| <kbd>POST /schedule/customer/{customerId}</kbd>              | Cria um agendamento associado a um cliente
+| <kbd>GET /schedule/customer/{customerId}</kbd>               | Lista os agendamento associados a um cliente
+| <kbd>GET /customer/{customerId}</kbd>                        | Busca os dados de um cliente
+| <kbd>PUT /schedule/{scheduleId}/customer/{customerId}/</kbd> | Cancela um agendamento associado a um cliente
+| <kbd>PUT /address/customer/{customerId}</kbd>                | Atualiza um endereço associado a um cliente
 
 
 ## Cria um cliente
-#### POST /customers
+#### POST /customer
 
 **REQUEST**
 ```json
@@ -137,7 +161,7 @@ Lista com os principais endpoints da aplicação
 ```
 
 ## Cria um veículo associado a um cliente
-#### POST /customers/{customerId}/vehicle
+#### POST /vehicle/customer/{customerId}
 
 **REQUEST**
 ```json
@@ -161,7 +185,7 @@ Lista com os principais endpoints da aplicação
 ```
 
 ## Cria um agendamento associado a um cliente
-#### POST /customers/{customerId}/schedule
+#### POST /schedule/customer/{customerId}
 
 **REQUEST**
 ```json
@@ -193,7 +217,7 @@ Lista com os principais endpoints da aplicação
 }
 ```
 ## Lista todos os agendamentos associados a um cliente
-#### GET /customers/{customerId}/schedule
+#### GET /schedule/customer{customerId}
 
 **RESPONSE**
 ```json
@@ -238,7 +262,7 @@ Lista com os principais endpoints da aplicação
 ```
 
 ## Busca um cliente por ID
-#### GET /customers/{customerId}
+#### GET /customer/{customerId}
 
 **RESPONSE**
 ```json
@@ -282,7 +306,7 @@ Lista com os principais endpoints da aplicação
 ```
 
 ## Atualiza um endereço associado a um cliente
-#### PUT /customers/{customerId}/address
+#### PUT /address/customer{customerId}
 
 **REQUEST**
 ```json
@@ -308,7 +332,7 @@ Lista com os principais endpoints da aplicação
 ```
 
 ## Atualiza o Status de um agendamento
-#### PUT /scheduling/{scheduleId}
+#### PUT /schedule/{scheduleId}
 
 **REQUEST**
 ```json
@@ -338,10 +362,6 @@ Lista com os principais endpoints da aplicação
   }
 }
 ```
-
-# Licença
-
-Livre para usar, estudar, brincar, trabalhar, etc.
 
 # Developed By
 
