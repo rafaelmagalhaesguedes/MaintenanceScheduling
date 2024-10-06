@@ -22,6 +22,10 @@ public class Schedule {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
     private LocalDateTime dateSchedule;
 
     private String descriptionService;

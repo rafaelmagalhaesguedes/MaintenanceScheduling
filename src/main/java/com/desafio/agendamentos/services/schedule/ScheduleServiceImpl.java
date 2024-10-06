@@ -1,12 +1,14 @@
 package com.desafio.agendamentos.services.schedule;
 
+import static com.desafio.agendamentos.services.validations.StatusValidation.validateStatus;
+import static com.desafio.agendamentos.services.validations.schedule.ScheduleValidation.validateScheduleDate;
+
 import com.desafio.agendamentos.entities.Schedule;
 import com.desafio.agendamentos.enums.Status;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
 import com.desafio.agendamentos.services.customer.ICustomerService;
 import com.desafio.agendamentos.services.exceptions.*;
-import com.desafio.agendamentos.services.validations.schedule.ScheduleValidation;
-import com.desafio.agendamentos.services.validations.status.StatusValidation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 
 /**
@@ -28,12 +31,6 @@ public class ScheduleServiceImpl implements IScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ICustomerService customerService;
 
-    /**
-     * Constrói um ScheduleServiceImpl com o ScheduleRepository e ICustomerService especificados.
-     *
-     * @param scheduleRepository o ScheduleRepository a ser usado
-     * @param customerService o ICustomerService a ser usado
-     */
     @Autowired
     public ScheduleServiceImpl(ScheduleRepository scheduleRepository, ICustomerService customerService) {
         this.scheduleRepository = scheduleRepository;
@@ -54,18 +51,30 @@ public class ScheduleServiceImpl implements IScheduleService {
     public Schedule createSchedule(Long customerId, Schedule schedule) throws CustomerNotFoundException, VehicleNotFoundException {
         var customer = customerService.findCustomerById(customerId);
 
+        // Verifica se o cliente possui algum veículo cadastrado
         if (customer.getVehicles().isEmpty()) {
             throw new VehicleNotFoundException();
         }
 
-        ScheduleValidation.validateScheduleDate(schedule.getDateSchedule());
+        // Associa o veículo para a manutenção
+        var vehicleId = schedule.getVehicle().getId();
+        var vehicleFromDb = customer.getVehicles().stream()
+                .filter(v -> v.getId().equals(vehicleId))
+                .findFirst()
+                .orElseThrow(VehicleNotFoundException::new);
 
+        // Valida a data do agendamento
+        validateScheduleDate(schedule.getDateSchedule());
+
+        // Formata a data
         var dateSchedule = formatScheduleDate(schedule.getDateSchedule());
 
+        // Cria novo agendamento com status PENDENTE
         var newSchedule = Schedule.builder()
                 .customer(customer)
                 .descriptionService(schedule.getDescriptionService())
                 .dateSchedule(dateSchedule)
+                .vehicle(vehicleFromDb)
                 .status(Status.PENDENTE)
                 .build();
 
@@ -100,21 +109,28 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     @Transactional
     public Schedule cancelSchedule(Long customerId, Long scheduleId, Status status) throws StatusValidateException, CustomerNotFoundException, ScheduleNotFoundException {
+
+        // Carrega os dados do agendamento
         var scheduleFromDb = scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
-        StatusValidation.validateStatus(status);
+        // Valida o status vindo do request
+        validateStatus(String.valueOf(status));
 
+        // Verifica se o id do customer bate com a do agendamento
         if (!scheduleFromDb.getCustomer().getId().equals(customerId)) {
             throw new StatusValidateException("Agendamento não encontrado para o cliente com id: " + customerId);
         }
 
+        // Verifica o status está como CANCELADO
         if (status != Status.CANCELADO) {
             throw new StatusValidateException("Status inválido para cancelamento");
         }
 
+        // Atualiza o status
         scheduleFromDb.setStatus(Status.CANCELADO);
 
+        // Salva tabela atualizada
         scheduleRepository.save(scheduleFromDb);
 
         return scheduleFromDb;
