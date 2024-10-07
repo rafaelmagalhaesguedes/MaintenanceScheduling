@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.mocks;
 
 import com.desafio.agendamentos.entities.Schedule;
-import com.desafio.agendamentos.enums.Status;
+import com.desafio.agendamentos.enums.ScheduleStatus;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class ScheduleMocks {
             .id(1L)
             .descriptionService("Service Description")
             .dateSchedule(getNextNonSunday(LocalDateTime.now().plusDays(1)))
-            .status(Status.PENDENTE)
+            .scheduleStatus(ScheduleStatus.PENDENTE)
             .customer(CustomerMocks.CUSTOMER)
             .build();
 

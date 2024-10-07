@@ -1,6 +1,6 @@
 package com.desafio.agendamentos.entities;
 
-import com.desafio.agendamentos.enums.Status;
+import com.desafio.agendamentos.enums.ScheduleStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,5 +31,5 @@ public class Schedule {
     private String descriptionService;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private ScheduleStatus scheduleStatus;
 }

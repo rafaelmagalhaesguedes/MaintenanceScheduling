@@ -1,9 +1,9 @@
 package com.desafio.agendamentos.controllers.dtos.status;
 
-import com.desafio.agendamentos.enums.Status;
+import com.desafio.agendamentos.enums.ScheduleStatus;
 import jakarta.validation.constraints.NotBlank;
 
 public record StatusRequest(
-     @NotBlank(message = "Status is mandatory")
-     Status status
+     @NotBlank(message = "ScheduleStatus is mandatory")
+     ScheduleStatus scheduleStatus
 ) { }

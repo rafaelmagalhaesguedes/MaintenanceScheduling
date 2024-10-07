@@ -16,7 +16,7 @@ public class OrderMocks {
             .manager((Manager) Manager.builder().id(1L).build())
             .mechanic(Mechanic.builder().id(1L).build())
             .createdAt(LocalDateTime.now())
-            .status(OrderStatus.PENDING)
+            .orderStatus(OrderStatus.PENDING)
             .build();
 
     public static final Order UPDATED_ORDER = Order.builder()
@@ -25,6 +25,6 @@ public class OrderMocks {
             .manager((Manager) Manager.builder().id(1L).build())
             .mechanic(Mechanic.builder().id(1L).build())
             .createdAt(LocalDateTime.now())
-            .status(OrderStatus.IN_PROGRESS)
+            .orderStatus(OrderStatus.IN_PROGRESS)
             .build();
 }

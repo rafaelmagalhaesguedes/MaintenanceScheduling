@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.repositories;
 
 import com.desafio.agendamentos.entities.Schedule;
-import com.desafio.agendamentos.enums.Status;
+import com.desafio.agendamentos.enums.ScheduleStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +12,4 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findScheduleByCustomerId(Long customerId);
-    Page<Schedule> findByStatus(Status status, Pageable pageable);
 }

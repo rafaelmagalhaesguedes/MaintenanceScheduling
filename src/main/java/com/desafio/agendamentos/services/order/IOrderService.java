@@ -1,5 +1,7 @@
 package com.desafio.agendamentos.services.order;
 
+import com.desafio.agendamentos.controllers.dtos.order.OrderRequest;
+import com.desafio.agendamentos.controllers.dtos.order.OrderUpdateRequest;
 import com.desafio.agendamentos.entities.Order;
 import com.desafio.agendamentos.enums.OrderStatus;
 import com.desafio.agendamentos.services.exceptions.OrderNotFoundException;
@@ -15,37 +17,27 @@ public interface IOrderService {
     /**
      * Cria uma nova ordem de serviço.
      *
-     * @param order a ordem de serviço a ser criada
+     * @param orderRequest a ordem de serviço a ser criada
      * @return a ordem de serviço criada
      */
-    Order create(Order order);
+    Order create(OrderRequest orderRequest);
 
     /**
      * Encontra uma ordem de serviço pelo ID.
      *
-     * @param serviceOrderId o ID da ordem de serviço
+     * @param orderId o ID da ordem de serviço
      * @return a ordem de serviço encontrada
      * @throws OrderNotFoundException se a ordem de serviço não for encontrada
      */
-    Order findById(Long serviceOrderId) throws OrderNotFoundException;
+    Order findById(Long orderId) throws OrderNotFoundException;
 
     /**
-     * Atualiza uma ordem de serviço existente.
+     * Finaliza uma ordem de serviço.
      *
-     * @param serviceOrderId o ID da ordem de serviço
-     * @param order os detalhes da ordem de serviço a serem atualizados
+     * @param orderId o ID da ordem de serviço
      * @throws OrderNotFoundException se a ordem de serviço não for encontrada
      */
-    void update(Long serviceOrderId, Order order) throws OrderNotFoundException;
-
-    /**
-     * Atualiza o status de uma ordem de serviço.
-     *
-     * @param serviceOrderId o ID da ordem de serviço
-     * @param status o novo status da ordem de serviço
-     * @throws OrderNotFoundException se a ordem de serviço não for encontrada
-     */
-    void updateStatus(Long serviceOrderId, OrderStatus status) throws OrderNotFoundException;
+    Order update(Long orderId, OrderUpdateRequest request) throws OrderNotFoundException;
 
     /**
      * Encontra todas as ordens de serviço.

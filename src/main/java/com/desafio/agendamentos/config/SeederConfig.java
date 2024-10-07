@@ -2,7 +2,7 @@ package com.desafio.agendamentos.config;
 
 import com.desafio.agendamentos.entities.Admin;
 import com.desafio.agendamentos.entities.Manager;
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 import com.desafio.agendamentos.repositories.UserRepository;
 import com.desafio.agendamentos.services.admin.AdminServiceImpl;
 import com.desafio.agendamentos.services.exceptions.UserExistsException;
@@ -59,7 +59,7 @@ public class SeederConfig {
                     .name(this.adminName)
                     .email(this.adminEmail)
                     .password(this.adminPassword)
-                    .role(Role.ADMIN)
+                    .userRole(UserRole.ADMIN)
                     .build();
 
             adminService.create(admin);
@@ -74,7 +74,7 @@ public class SeederConfig {
                     .name(this.managerName)
                     .email(this.managerEmail)
                     .password(this.managerPassword)
-                    .role(Role.MANAGER)
+                    .userRole(UserRole.MANAGER)
                     .build();
 
             managerService.create(manager);

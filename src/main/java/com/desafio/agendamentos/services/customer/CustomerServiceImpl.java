@@ -2,7 +2,7 @@ package com.desafio.agendamentos.services.customer;
 
 import com.desafio.agendamentos.entities.Customer;
 
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 import com.desafio.agendamentos.repositories.CustomerRepository;
 
 import com.desafio.agendamentos.services.CepService;
@@ -49,7 +49,7 @@ public class CustomerServiceImpl implements ICustomerService {
 
         var encodedPassword = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(encodedPassword);
-        customer.setRole(Role.CUSTOMER);
+        customer.setUserRole(UserRole.CUSTOMER);
 
         return customerRepository.save(customer);
     }

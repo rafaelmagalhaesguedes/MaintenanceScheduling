@@ -1,6 +1,6 @@
 package com.desafio.agendamentos.enums;
 
-public enum Status {
+public enum ScheduleStatus {
     PENDENTE,
     REALIZADO,
     CANCELADO

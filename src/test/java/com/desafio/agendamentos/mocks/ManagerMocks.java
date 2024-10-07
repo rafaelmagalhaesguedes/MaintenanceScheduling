@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.mocks;
 
 import com.desafio.agendamentos.entities.Manager;
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 
 public class ManagerMocks {
 
@@ -10,7 +10,7 @@ public class ManagerMocks {
             .name("John Doe")
             .email("john.doe@example.com")
             .password("password")
-            .role(Role.MANAGER)
+            .userRole(UserRole.MANAGER)
             .register("123456")
             .department("IT")
             .location("New York")

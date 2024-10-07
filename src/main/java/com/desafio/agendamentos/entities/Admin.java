@@ -1,6 +1,6 @@
 package com.desafio.agendamentos.entities;
 
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -15,8 +15,8 @@ public class Admin extends User {
     private Boolean isDeleted = false;
 
     @Builder
-    public Admin(Long id, String name, String email, String password, Role role, Boolean isActive, Boolean isDeleted) {
-        super(id, name, email, password, role);
+    public Admin(Long id, String name, String email, String password, UserRole userRole, Boolean isActive, Boolean isDeleted) {
+        super(id, name, email, password, userRole);
         this.isActive = isActive;
         this.isDeleted = isDeleted;
     }

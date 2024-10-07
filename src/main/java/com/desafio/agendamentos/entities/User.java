@@ -1,6 +1,6 @@
 package com.desafio.agendamentos.entities;
 
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 
 import jakarta.persistence.*;
 
@@ -32,17 +32,17 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole userRole;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public User(Long id, String name, String email, String password, Role role) {
+    public User(Long id, String name, String email, String password, UserRole userRole) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.userRole = userRole;
     }
 
     @PrePersist
@@ -57,7 +57,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(userRole.name()));
     }
 
     @Override

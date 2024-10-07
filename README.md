@@ -201,7 +201,7 @@ Lista com os principais endpoints da aplicação
   "id": 1,
   "dateSchedule": "2024-10-14T10:10:23",
   "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
-  "status": "PENDENTE",
+  "scheduleStatus": "PENDENTE",
   "customer": {
     "id": 1,
     "name": "Rafa Guedes",
@@ -226,7 +226,7 @@ Lista com os principais endpoints da aplicação
     "id": 1,
     "dateSchedule": "2024-10-14T10:10:23",
     "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
-    "status": "PENDENTE",
+    "scheduleStatus": "PENDENTE",
     "customer": {
       "id": 1,
       "name": "Rafa Guedes",
@@ -244,7 +244,7 @@ Lista com os principais endpoints da aplicação
     "id": 2,
     "dateSchedule": "2024-10-13T10:00:00",
     "descriptionService": "Alinhamento, balancemanto e troca de pastilhas de freio.",
-    "status": "PENDENTE",
+    "scheduleStatus": "PENDENTE",
     "customer": {
       "id": 1,
       "name": "Rafa Guedes",
@@ -293,13 +293,13 @@ Lista com os principais endpoints da aplicação
       "id": 1,
       "dateSchedule": "2024-10-14T10:10:23",
       "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
-      "status": "PENDENTE"
+      "scheduleStatus": "PENDENTE"
     },
     {
       "id": 2,
       "dateSchedule": "2024-10-14T10:10:00",
       "descriptionService": "Alinhamento, balancemanto e troca de pastilhas de freio.",
-      "status": "PENDENTE"
+      "scheduleStatus": "PENDENTE"
     }
   ]
 }
@@ -337,7 +337,7 @@ Lista com os principais endpoints da aplicação
 **REQUEST**
 ```json
 {
-  "status": "REALIZADO"
+  "scheduleStatus": "REALIZADO"
 }
 ```
 
@@ -347,7 +347,7 @@ Lista com os principais endpoints da aplicação
   "id": 1,
   "dateSchedule": "2024-10-14T10:10:23",
   "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
-  "status": "REALIZADO",
+  "scheduleStatus": "REALIZADO",
   "customer": {
     "id": 1,
     "name": "Rafa Guedes",

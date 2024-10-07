@@ -1,7 +1,6 @@
 package com.desafio.agendamentos.controllers.dtos.manager;
 
 import com.desafio.agendamentos.entities.Manager;
-import com.desafio.agendamentos.enums.Role;
 
 public record ManagerResponse(
         Long id,
@@ -9,8 +8,7 @@ public record ManagerResponse(
         String email,
         String register,
         String department,
-        String location,
-        Role role
+        String location
 ) {
     public static ManagerResponse fromManager(Manager manager) {
         return new ManagerResponse(
@@ -19,8 +17,7 @@ public record ManagerResponse(
                 manager.getEmail(),
                 manager.getRegister(),
                 manager.getDepartment(),
-                manager.getLocation(),
-                manager.getRole()
+                manager.getLocation()
         );
     }
 }

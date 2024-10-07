@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.controllers.dtos.manager;
 
 import com.desafio.agendamentos.entities.Manager;
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -41,7 +41,7 @@ public record ManagerRequest(
                 .register(register)
                 .department(department)
                 .location(location)
-                .role(Role.MANAGER)
+                .userRole(UserRole.MANAGER)
                 .build();
     }
 }

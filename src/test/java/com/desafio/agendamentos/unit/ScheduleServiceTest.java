@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.unit;
 
 import com.desafio.agendamentos.entities.Schedule;
-import com.desafio.agendamentos.enums.Status;
+import com.desafio.agendamentos.enums.ScheduleStatus;
 import com.desafio.agendamentos.repositories.ScheduleRepository;
 import com.desafio.agendamentos.services.customer.CustomerServiceImpl;
 import com.desafio.agendamentos.services.exceptions.*;
@@ -51,7 +51,7 @@ public class ScheduleServiceTest {
         assertThat(result).isNotNull();
         assertThat(result.getDateSchedule()).isEqualTo(SCHEDULE.getDateSchedule());
         assertThat(result.getDescriptionService()).isEqualTo(SCHEDULE.getDescriptionService());
-        assertThat(result.getStatus()).isEqualTo(SCHEDULE.getStatus());
+        assertThat(result.getScheduleStatus()).isEqualTo(SCHEDULE.getScheduleStatus());
         assertThat(result.getCustomer()).isEqualTo(SCHEDULE.getCustomer());
     }
 
@@ -112,11 +112,11 @@ public class ScheduleServiceTest {
         when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
 
         // Act
-        var result = scheduleService.cancelSchedule(customerId, scheduleId, Status.CANCELADO);
+        var result = scheduleService.cancelSchedule(customerId, scheduleId, ScheduleStatus.CANCELADO);
 
         // Assert
         assertThat(result).isNotNull();
-        assertThat(result.getStatus()).isEqualTo(Status.CANCELADO);
+        assertThat(result.getScheduleStatus()).isEqualTo(ScheduleStatus.CANCELADO);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class ScheduleServiceTest {
         when(scheduleRepository.findById(scheduleId)).thenThrow(new ScheduleNotFoundException());
 
         // Act & Assert
-        assertThatThrownBy(() -> scheduleService.cancelSchedule(customerId, scheduleId, Status.CANCELADO))
+        assertThatThrownBy(() -> scheduleService.cancelSchedule(customerId, scheduleId, ScheduleStatus.CANCELADO))
                 .isInstanceOf(ScheduleNotFoundException.class);
     }
 
@@ -144,7 +144,7 @@ public class ScheduleServiceTest {
         when(scheduleRepository.findById(scheduleId)).thenReturn(Optional.of(schedule));
 
         // Act & Assert
-        assertThatThrownBy(() -> scheduleService.cancelSchedule(customerId, scheduleId, Status.REALIZADO))
+        assertThatThrownBy(() -> scheduleService.cancelSchedule(customerId, scheduleId, ScheduleStatus.REALIZADO))
                 .isInstanceOf(StatusValidateException.class);
     }
 }

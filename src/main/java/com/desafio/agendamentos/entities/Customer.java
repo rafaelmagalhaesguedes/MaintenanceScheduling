@@ -1,6 +1,6 @@
 package com.desafio.agendamentos.entities;
 
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 import com.desafio.agendamentos.services.CryptoService;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,8 +35,8 @@ public class Customer extends User {
     private List<Schedule> appointments = new ArrayList<>();
 
     @Builder
-    public Customer(Long id, String name, String email, String password, Role role, String rawDocument, String numberPhone, Address address, List<Vehicle> vehicle) {
-        super(id, name, email, password, role);
+    public Customer(Long id, String name, String email, String password, UserRole userRole, String rawDocument, String numberPhone, Address address, List<Vehicle> vehicle) {
+        super(id, name, email, password, userRole);
         this.numberPhone = numberPhone;
         this.rawDocument = rawDocument;
         this.address = address;

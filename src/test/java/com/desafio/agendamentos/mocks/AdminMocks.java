@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.mocks;
 
 import com.desafio.agendamentos.entities.Admin;
-import com.desafio.agendamentos.enums.Role;
+import com.desafio.agendamentos.enums.UserRole;
 
 public class AdminMocks {
 
@@ -10,6 +10,6 @@ public class AdminMocks {
             .name("Admin User")
             .email("admin@example.com")
             .password("password")
-            .role(Role.ADMIN)
+            .userRole(UserRole.ADMIN)
             .build();
 }

@@ -1,13 +1,15 @@
 package com.desafio.agendamentos.entities;
 
 import com.desafio.agendamentos.enums.OrderStatus;
+import com.desafio.agendamentos.enums.PaymentType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_service_orders")
+@Table(name = "tb_orders")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,10 +33,15 @@ public class Order {
     @JoinColumn(name = "mechanic_id", nullable = false)
     private Mechanic mechanic;
 
-    @Column(name = "created_at", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
+
+    private Double totalAmount;
+
     private LocalDateTime createdAt;
 
+    private LocalDateTime finishedAt;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 }

@@ -64,11 +64,10 @@ public class ScheduleController {
     @ApiResponse(responseCode = "200", description = "Retorna dados agendamento cancelado")
     public ScheduleResponse cancelCustomerSchedule(
             @PathVariable @Min(1) Long customerId,
-            @PathVariable @Min(1) Long scheduleId,
-            @RequestBody StatusRequest request
+            @PathVariable @Min(1) Long scheduleId
     ) throws StatusValidateException {
         var updatedSchedule = scheduleService
-                .cancelSchedule(customerId, scheduleId, request.status());
+                .cancelSchedule(customerId, scheduleId);
 
         return ScheduleResponse.fromEntity(updatedSchedule);
     }

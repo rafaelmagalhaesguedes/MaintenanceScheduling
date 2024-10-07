@@ -69,10 +69,10 @@ public class ManagerController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{managerId}/active-status")
-    @Operation(summary = "Update the active status of an manager")
+    @PatchMapping("/{managerId}/active-scheduleStatus")
+    @Operation(summary = "Update the active scheduleStatus of an manager")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Manager active status updated successfully"),
+            @ApiResponse(responseCode = "204", description = "Manager active scheduleStatus updated successfully"),
             @ApiResponse(responseCode = "404", description = "Manager not found")
     })
     public ResponseEntity<Void> updateActiveStatus(

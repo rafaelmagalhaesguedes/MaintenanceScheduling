@@ -83,10 +83,10 @@ public class ManagerServiceImpl implements IManagerService {
     }
 
     /**
-     * Atualiza o status de atividade de um gerente.
+     * Atualiza o scheduleStatus de atividade de um gerente.
      *
      * @param managerId o ID do gerente
-     * @param activeStatus o novo status de atividade
+     * @param activeStatus o novo scheduleStatus de atividade
      * @throws ManagerNotFoundException se o gerente não for encontrado
      */
     @Override

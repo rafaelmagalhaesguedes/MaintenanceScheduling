@@ -66,7 +66,7 @@ public class MechanicController {
      *
      * @param mechanicId o ID do mecânico
      * @param mechanicRequest os detalhes do mecânico a serem atualizados
-     * @return uma resposta vazia com status 204 (No Content)
+     * @return uma resposta vazia com scheduleStatus 204 (No Content)
      */
     @PutMapping("/{mechanicId}")
     @Operation(summary = "Update mechanic by ID")
@@ -86,7 +86,7 @@ public class MechanicController {
      * Deleta um mecânico pelo ID.
      *
      * @param mechanicId o ID do mecânico
-     * @return uma resposta vazia com status 204 (No Content)
+     * @return uma resposta vazia com scheduleStatus 204 (No Content)
      */
     @DeleteMapping("/{mechanicId}")
     @Operation(summary = "Delete a mechanic by ID")

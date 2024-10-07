@@ -1,7 +1,7 @@
 package com.desafio.agendamentos.services.schedule;
 
 import com.desafio.agendamentos.entities.Schedule;
-import com.desafio.agendamentos.enums.Status;
+import com.desafio.agendamentos.enums.ScheduleStatus;
 import com.desafio.agendamentos.services.exceptions.*;
 
 import java.util.List;
@@ -37,13 +37,12 @@ public interface IScheduleService {
      *
      * @param customerId o ID do cliente
      * @param scheduleId o ID do agendamento
-     * @param status o status a ser definido para o agendamento
      * @return o agendamento cancelado
-     * @throws StatusValidateException se o status for inválido para cancelamento
+     * @throws StatusValidateException se o scheduleStatus for inválido para cancelamento
      * @throws CustomerNotFoundException se o cliente não for encontrado
      * @throws ScheduleNotFoundException se o agendamento não for encontrado
      */
-    Schedule cancelSchedule(Long customerId, Long scheduleId, Status status) throws StatusValidateException, CustomerNotFoundException, ScheduleNotFoundException;
+    Schedule cancelSchedule(Long customerId, Long scheduleId) throws StatusValidateException, CustomerNotFoundException, ScheduleNotFoundException;
 
     /**
      * Encontra todos os agendamentos com paginação.

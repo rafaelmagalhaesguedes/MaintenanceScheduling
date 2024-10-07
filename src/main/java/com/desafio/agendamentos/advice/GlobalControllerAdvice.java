@@ -87,7 +87,7 @@ public class GlobalControllerAdvice {
     }
 
     /**
-     * Trata exceções de validação do status do agendamento
+     * Trata exceções de validação do scheduleStatus do agendamento
      *
      * @param ex Exceção lançada quando os dados de atualização são inválidos.
      * @return Resposta HTTP com mensagem de entidade não processável.

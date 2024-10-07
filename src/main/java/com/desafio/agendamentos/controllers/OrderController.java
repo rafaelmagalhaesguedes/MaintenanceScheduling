@@ -2,27 +2,27 @@ package com.desafio.agendamentos.controllers;
 
 import com.desafio.agendamentos.controllers.dtos.order.OrderRequest;
 import com.desafio.agendamentos.controllers.dtos.order.OrderResponse;
+import com.desafio.agendamentos.controllers.dtos.order.OrderUpdateRequest;
+import com.desafio.agendamentos.controllers.dtos.order.OrderListResponse;
 import com.desafio.agendamentos.entities.Order;
-import com.desafio.agendamentos.enums.OrderStatus;
 import com.desafio.agendamentos.services.exceptions.OrderNotFoundException;
 import com.desafio.agendamentos.services.order.IOrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
-@PreAuthorize("hasAuthority('MANAGER')")
 public class OrderController {
 
     private final IOrderService orderService;
@@ -40,7 +40,7 @@ public class OrderController {
             @ApiResponse(responseCode = "409", description = "Conflict in creating service order")
     })
     public OrderResponse create(@Valid @RequestBody OrderRequest orderRequest) {
-        var serviceOrder = orderService.create(orderRequest.toEntity());
+        var serviceOrder = orderService.create(orderRequest);
 
         return OrderResponse.fromEntity(serviceOrder);
     }
@@ -57,34 +57,19 @@ public class OrderController {
         return OrderResponse.fromEntity(serviceOrder);
     }
 
-    @PutMapping("/{orderId}")
-    @Operation(summary = "Update service order by ID")
+    @PatchMapping("/{orderId}")
+    @Operation(summary = "Finalize the order and schedule service")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Service order updated successfully"),
+            @ApiResponse(responseCode = "204", description = "Service order and schedule finalize successfully"),
             @ApiResponse(responseCode = "404", description = "Service order not found")
     })
-    public ResponseEntity<Void> update(
-            @PathVariable Long orderId,
-            @Valid @RequestBody OrderRequest orderRequest
+    public OrderListResponse update(
+            @PathVariable @Valid @Min(1) Long orderId,
+            @RequestBody OrderUpdateRequest request
     ) throws OrderNotFoundException {
-        orderService.update(orderId, orderRequest.toEntity());
+        var updatedOrder = orderService.update(orderId, request);
 
-        return ResponseEntity.noContent().build();
-    }
-
-    @PatchMapping("/{orderId}/status")
-    @Operation(summary = "Update the status of a service order")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Service order status updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Service order not found")
-    })
-    public ResponseEntity<Void> updateStatus(
-            @PathVariable Long orderId,
-            @RequestParam OrderStatus status
-    ) throws OrderNotFoundException {
-        orderService.updateStatus(orderId, status);
-
-        return ResponseEntity.noContent().build();
+        return OrderListResponse.fromEntity(updatedOrder);
     }
 
     @GetMapping
@@ -92,7 +77,7 @@ public class OrderController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Orders found")
     })
-    public List<OrderResponse> findAll(
+    public List<OrderListResponse> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -100,7 +85,7 @@ public class OrderController {
         Page<Order> orders = orderService.findAll(pageable);
 
         return orders.stream()
-                .map(OrderResponse::fromEntity)
+                .map(OrderListResponse::fromEntity)
                 .toList();
     }
 
