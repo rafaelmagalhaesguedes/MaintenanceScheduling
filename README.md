@@ -59,7 +59,7 @@ Agora, suba os serviços docker com o comando abaixo
 
 O serviço estará disponível na porta 8080 em seu localhost
 
-1. Abra seu navegador ou API client e acesse http://localhost:8080/
+1. Abra seu navegador ou API client e acesse http://localhost
 
 ## Tecnologias
 
@@ -106,7 +106,7 @@ acesso aos endpoints. As roles disponíveis são:
 
 ## Documentação
 
-O projeto utiliza o Swagger para documentação dos endpoints, acesse [neste link](http://localhost:8080/swagger-ui/index.html#/).
+O projeto utiliza o Swagger para documentação dos endpoints, acesse [neste link](http://localhost/swagger-ui/index.html#/).
 
 ## Proteção de dados
 

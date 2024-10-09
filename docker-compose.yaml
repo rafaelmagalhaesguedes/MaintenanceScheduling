@@ -1,22 +1,43 @@
+version: '3.8'
+
 services:
 
-  backend:
+  nginx:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "8080:8080"
+      - "80:80"
     depends_on:
-      - database
+      - backend
+    networks:
+      - network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    container_name: backend
+    networks:
+      - network
 
   database:
     image: postgres:latest
     restart: always
     container_name: postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: scheduledb
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge

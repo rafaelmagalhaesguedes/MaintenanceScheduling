@@ -1,19 +1,4 @@
-FROM eclipse-temurin:17-jdk-jammy as build-image
-WORKDIR /app
+# Dockerfile for Nginx
+FROM nginx:latest
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-RUN ./mvnw dependency:go-offline
-
-COPY ./src/main/ ./src/main/
-
-RUN ./mvnw clean package
-
-
-FROM eclipse-temurin:17-jre-jammy as deploy-image
-
-COPY --from=build-image /app/target/*.jar /app/app.jar
-
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+COPY nginx.conf /etc/nginx/nginx.conf
