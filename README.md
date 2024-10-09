@@ -116,16 +116,48 @@ O projeto utiliza encriptação para os dados sensíveis da aplicação, para fa
 
 Lista com os principais endpoints da aplicação
 
+Autenticação:
+
+| Rota                         | Descrição                                          
+|------------------------------|-----------------------------------------------------
+| <kbd>POST /auth/login</kbd>  | Autenticação no sistema
+| <kbd>POST /auth/logout</kbd> | Sair do sistema
+
+
+Customer:
+
 | Rota                                                         | Descrição                                          
 |--------------------------------------------------------------|-----------------------------------------------------
 | <kbd>POST /customer</kbd>                                    | Cria um novo cliente
-| <kbd>POST /auth/login</kbd>                     | Authentica o usuário no sistema
 | <kbd>POST /vehicle/customer/{customerId}</kbd>               | Cria um veículo associado a um cliente
 | <kbd>POST /schedule/customer/{customerId}</kbd>              | Cria um agendamento associado a um cliente
 | <kbd>GET /schedule/customer/{customerId}</kbd>               | Lista os agendamento associados a um cliente
 | <kbd>GET /customer/{customerId}</kbd>                        | Busca os dados de um cliente
 | <kbd>PUT /schedule/{scheduleId}/customer/{customerId}/</kbd> | Cancela um agendamento associado a um cliente
 | <kbd>PUT /address/customer/{customerId}</kbd>                | Atualiza um endereço associado a um cliente
+
+
+Manager:
+
+| Rota                                     | Descrição                                          
+|------------------------------------------|-----------------------------------------------------
+| <kbd>GET /schedule</kbd>                 | Lista todos os agendamentos
+| <kbd>POST /order</kbd>                   | Cria ordem de serviço
+| <kbd>PATCH /order/{orderId}</kbd>        | Finaliza ordem de serviço
+| <kbd>POST /mechanic</kbd>                | Cria mecânico
+| <kbd>GET /mechanic/{mechanicId}</kbd>    | Busca mecânico
+| <kbd>PUT /mechanic/{mechanicId}</kbd>    | Atualiza dados do mecânico
+| <kbd>DELETE /mechanic/{mechanicId}</kbd> | Deleta mecânico
+
+
+Admin:
+
+| Rota                                   | Descrição                                          
+|----------------------------------------|-----------------------------------------------------
+| <kbd>POST /manager</kbd>               | Cria gerente
+| <kbd>GET /manager/{managerId}</kbd>    | Busca gerente
+| <kbd>PUT /manager/{managerId}</kbd>    | Atualiza dados do gerente
+| <kbd>DELETE /manager/{managerId}</kbd> | Deleta gerente
 
 
 ## Cria um cliente
@@ -216,8 +248,9 @@ Lista com os principais endpoints da aplicação
   }
 }
 ```
-## Lista todos os agendamentos associados a um cliente
-#### GET /schedule/customer{customerId}
+
+## Lista todos os agendamentos
+#### GET /schedule
 
 **RESPONSE**
 ```json
@@ -225,35 +258,35 @@ Lista com os principais endpoints da aplicação
   {
     "id": 1,
     "dateSchedule": "2024-10-14T10:10:23",
-    "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
+    "descriptionService": "Manutenção preventiva.",
     "scheduleStatus": "PENDENTE",
     "customer": {
-      "id": 1,
+      "id": 3,
       "name": "Rafa Guedes",
-      "email": "rafa@email.com",
+      "email": "rafael@email.com",
       "numberPhone": "31997785451",
       "vehicles": [
         {
-          "model": "HB20",
-          "licensePlate": "RWT9988"
+          "model": "Ranger",
+          "licensePlate": "RMT9987"
         }
       ]
     }
   },
   {
     "id": 2,
-    "dateSchedule": "2024-10-13T10:00:00",
-    "descriptionService": "Alinhamento, balancemanto e troca de pastilhas de freio.",
+    "dateSchedule": "2024-10-14T14:10:23",
+    "descriptionService": "Manutenção suspensão e freios.",
     "scheduleStatus": "PENDENTE",
     "customer": {
-      "id": 1,
+      "id": 3,
       "name": "Rafa Guedes",
-      "email": "rafa@email.com",
+      "email": "rafael@email.com",
       "numberPhone": "31997785451",
       "vehicles": [
         {
-          "model": "HB20",
-          "licensePlate": "RWT9988"
+          "model": "Ranger",
+          "licensePlate": "RMT9987"
         }
       ]
     }
@@ -261,105 +294,49 @@ Lista com os principais endpoints da aplicação
 ]
 ```
 
-## Busca um cliente por ID
-#### GET /customer/{customerId}
-
-**RESPONSE**
-```json
-{
-  "id": 1,
-  "name": "Rafael Guedes",
-  "email": "rafa@email.com",
-  "numberPhone": "31997785451",
-  "document": "12345678910",
-  "address": {
-    "cep": "31510-090",
-    "logradouro": "Rua Anita Garibaldi",
-    "bairro": "Candelária",
-    "localidade": "Belo Horizonte",
-    "uf": "MG"
-  },
-  "vehicles": [
-    {
-      "id": 1,
-      "licensePlate": "RWT9988",
-      "model": "HB20",
-      "make": "Hyundai",
-      "year": 2022
-    }
-  ],
-  "schedules": [
-    {
-      "id": 1,
-      "dateSchedule": "2024-10-14T10:10:23",
-      "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
-      "scheduleStatus": "PENDENTE"
-    },
-    {
-      "id": 2,
-      "dateSchedule": "2024-10-14T10:10:00",
-      "descriptionService": "Alinhamento, balancemanto e troca de pastilhas de freio.",
-      "scheduleStatus": "PENDENTE"
-    }
-  ]
-}
-```
-
-## Atualiza um endereço associado a um cliente
-#### PUT /address/customer{customerId}
+## Cria Ordem de Serviço
+#### POST /order
 
 **REQUEST**
 ```json
 {
-  "cep": "45810-000",
-  "logradouro": "Rua Carlos C Silva",
-  "bairro": "Parque Ecológico",
-  "localidade": "Porto Seguro",
-  "uf": "BA"
+  "scheduleId": 1,
+  "managerId": 2,
+  "mechanicId": 1
 }
 ```
 
 **RESPONSE**
 ```json
 {
-  "id": 1,
-  "cep": "45810-000",
-  "logradouro": "Rua Carlos C Silva",
-  "bairro": "Parque Ecológico",
-  "localidade": "Porto Seguro",
-  "uf": "BA"
+  "id": 2,
+  "descriptionService": "Manutenção preventiva.",
+  "createdAt": "2024-10-07T14:23:48.976291738",
+  "orderStatus": "IN_PROGRESS"
 }
 ```
 
-## Atualiza o Status de um agendamento
-#### PUT /schedule/{scheduleId}
+## Finaliza Ordem de Serviço
+#### PATCH /order/{orderId}
 
 **REQUEST**
 ```json
 {
-  "scheduleStatus": "REALIZADO"
+  "paymentType": "DEBIT_CARD",
+  "totalAmount": "1000.00"
 }
 ```
 
 **RESPONSE**
 ```json
 {
-  "id": 1,
-  "dateSchedule": "2024-10-14T10:10:23",
-  "descriptionService": "Manutenção preventiva e substituição da bomba d'água e válvula termostática.",
-  "scheduleStatus": "REALIZADO",
-  "customer": {
-    "id": 1,
-    "name": "Rafa Guedes",
-    "email": "rafa@email.com",
-    "numberPhone": "31997785451",
-    "vehicles": [
-      {
-        "model": "HB20",
-        "licensePlate": "RWT9988"
-      }
-    ]
-  }
+  "id": 2,
+  "descriptionService": "Manutenção preventiva.",
+  "paymentType": "DEBIT_CARD",
+  "totalAmount": 1000.0,
+  "createdAt": "2024-10-07T14:23:48.976292",
+  "finishedAt": "2024-10-07T14:24:22.395491552",
+  "orderStatus": "COMPLETED"
 }
 ```
 

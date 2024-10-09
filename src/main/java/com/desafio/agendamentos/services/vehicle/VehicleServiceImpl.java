@@ -43,7 +43,9 @@ public class VehicleServiceImpl implements IVehicleService {
     @Transactional
     public Vehicle createVehicle(Long customerId, Vehicle vehicle) throws CustomerNotFoundException, VehicleValidateException {
         var customer = customerService.findCustomerById(customerId);
+
         VehicleValidation.vehicleCreationValidate(vehicle);
+
         vehicle.setCustomer(customer);
 
         return vehicleRepository.save(vehicle);
